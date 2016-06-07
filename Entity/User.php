@@ -27,6 +27,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function isAccountNonExpired()
     {
+        return false;
     }
 
     /**
@@ -41,6 +42,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function isAccountNonLocked()
     {
+        return false;
     }
 
     /**
@@ -55,6 +57,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function isCredentialsNonExpired()
     {
+        return false;
     }
 
     /**
@@ -69,6 +72,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function isEnabled()
     {
+        return false;
     }
 
     /**
@@ -89,6 +93,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getRoles()
     {
+        return array();
     }
 
     /**
@@ -101,6 +106,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getPassword()
     {
+        return '';
     }
 
     /**
@@ -121,6 +127,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getUsername()
     {
+        return '';
     }
 
     /**
@@ -128,9 +135,11 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * This is important if, at any given point, sensitive information like
      * the plain-text password is stored on this object.
+     * @return User
      */
     public function eraseCredentials()
     {
+        return $this;
     }
 
     /**
