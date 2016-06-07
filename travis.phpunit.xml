@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit colors="true" bootstrap="vendor/autoload.php">
+<phpunit bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="Bundle Test Suite">
-            <directory suffix="Test.php">./Tests/</directory>
+        <testsuite name="User Test Suite">
+            <directory>./Tests/</directory>
         </testsuite>
     </testsuites>
-
     <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
+        <blacklist processUncoveredFilesFromWhitelist="false">
+            <directory>./vendor</directory>
+        </blacklist>
     </filter>
 </phpunit>
