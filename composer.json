@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "symfony/security": "3.1.*"
+        "symfony/security": "3.1.*",
+        "symfony/class-loader": "3.1.*"
     },
     "autoload": {
         "psr-4": { "RybakDigital\\Bundle\\UserBundle\\": "" }
