@@ -5,6 +5,7 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
@@ -15,6 +16,40 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  */
 class User implements AdvancedUserInterface, \Serializable
 {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * Get id
+     *
+     * @return integer|null
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param   integer     $id
+     * @return  User
+     */
+    public function setId($id)
+    {
+        if (is_integer($id)) {
+            $this->id = $id;
+        } else {
+            throw new \InvalidArgumentException("User id must be an integer", Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this;
+    }
+
     /**
      * Checks whether the user's account has expired.
      *
