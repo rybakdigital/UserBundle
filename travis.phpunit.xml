@@ -13,7 +13,6 @@
     stopOnIncomplete="false"
     stopOnSkipped="false"
     syntaxCheck="true"
-    strict="true"
     verbose="true"
     bootstrap="vendor/autoload.php">
     <testsuites>
