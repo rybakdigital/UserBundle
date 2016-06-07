@@ -24,13 +24,5 @@
         <blacklist processUncoveredFilesFromWhitelist="false">
             <directory>./vendor</directory>
         </blacklist>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
     </filter>
 </phpunit>

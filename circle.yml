@@ -1,7 +1,7 @@
 
 machine:
   php:
-    version: 5.5.9
+    version: 5.5.31
 test:
   override:
     - phpunit --configuration circle.phpunit.xml
