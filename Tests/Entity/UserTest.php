@@ -2,10 +2,10 @@
 
 namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use \PHPUnit_Framework_TestCase as TestCase;
 use RybakDigital\Bundle\UserBundle\Entity\User;
 
-class UserTest extends WebTestCase
+class UserTest extends TestCase
 {
     /**
      * @dataProvider userObjectProvider
