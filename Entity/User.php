@@ -210,4 +210,20 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     public function unserialize($serialized)
     {
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getApiKey()
+    {
+        return $this->getApiToken();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function loadApiAppByName($name)
+    {
+        return $this;
+    }
 }
