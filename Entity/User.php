@@ -26,6 +26,11 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     private $id;
 
     /**
+     * @ORM\Column(name="username", type="string", length=64, unique=true)
+     */
+    private $username;
+
+    /**
      * Get id
      *
      * @return integer|null
@@ -50,6 +55,29 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
         }
 
         return $this;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 
     /**
@@ -155,16 +183,6 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function getSalt()
     {
-    }
-
-    /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
-    {
-        return '';
     }
 
     /**
