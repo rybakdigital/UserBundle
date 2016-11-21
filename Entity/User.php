@@ -4,8 +4,10 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppToken\AppTokenAuthorizableInterface;
+use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUserToken\AppUserInterface;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
@@ -14,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @ORM\Table(name="acl_users")
  * @ORM\Entity(repositoryClass="RybakDigital\Bundle\UserBundle\Entity\UserRepository")
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizableInterface, AppUserInterface
 {
     /**
      * @ORM\Column(type="integer")
