@@ -7,12 +7,12 @@ use RybakDigital\Bundle\UserBundle\Entity\User;
 
 class UserTest extends TestCase
 {
-    /**
-     * @dataProvider userObjectProvider
-     */
     public function userObjectProvider()
     {
         $userOne = new User;
+        $userOne
+            ->setId(15);
+
         $userTwo = new User;
 
         // Build array of User objects
@@ -109,5 +109,44 @@ class UserTest extends TestCase
     public function testEraseCredentials($user)
     {
         $this->assertTrue(is_a($user->eraseCredentials(), User::class));
+    }
+
+    /**
+     * @dataProvider userObjectProvider
+     */
+    public function testGetId($user)
+    {
+        if (!is_null($user->getId())) {
+            $this->assertTrue(is_int($user->getId()));
+        } else {
+            $this->assertTrue(is_null($user->getId()));
+        }
+    }
+
+    /**
+     * @dataProvider userObjectProvider
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetIdFail_id_is_string($user)
+    {
+        $user->setId("15");
+    }
+
+    /**
+     * @dataProvider userObjectProvider
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetIdFail_id_is_array($user)
+    {
+        $user->setId(array());
+    }
+
+    /**
+     * @dataProvider userObjectProvider
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetIdFail_id_is_object($user)
+    {
+        $user->setId(new \StdClass());
     }
 }
