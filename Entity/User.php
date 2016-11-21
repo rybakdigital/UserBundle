@@ -4,8 +4,10 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppToken\AppTokenAuthorizableInterface;
+use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUserToken\AppUserInterface;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
@@ -14,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @ORM\Table(name="acl_users")
  * @ORM\Entity(repositoryClass="RybakDigital\Bundle\UserBundle\Entity\UserRepository")
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizableInterface, AppUserInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -22,6 +24,11 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\Column(name="username", type="string", length=64, unique=true)
+     */
+    private $username;
 
     /**
      * Get id
@@ -48,6 +55,29 @@ class User implements AdvancedUserInterface, \Serializable
         }
 
         return $this;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 
     /**
@@ -156,16 +186,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
-    {
-        return '';
-    }
-
-    /**
      * Removes sensitive data from the user.
      *
      * This is important if, at any given point, sensitive information like
@@ -189,5 +209,21 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function unserialize($serialized)
     {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getApiKey()
+    {
+        return $this->getApiToken();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function loadApiAppByName($name)
+    {
+        return $this;
     }
 }

@@ -32,6 +32,8 @@ class UserTest extends TestCase
     {
         $this->assertTrue(is_a($user, 'Symfony\Component\Security\Core\User\AdvancedUserInterface'));
         $this->assertTrue(is_a($user, 'Symfony\Component\Security\Core\User\UserInterface'));
+        $this->assertTrue(is_a($user, 'RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppToken\AppTokenAuthorizableInterface'));
+        $this->assertTrue(is_a($user, 'RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUserToken\AppUserInterface'));
         $this->assertTrue(is_a($user, 'Serializable'));
     }
 
@@ -100,7 +102,11 @@ class UserTest extends TestCase
      */
     public function testGetUsername($user)
     {
-        $this->assertTrue(is_string($user->getUsername()));
+        if ($user->getUsername()) {
+            $this->assertTrue(is_string($user->getUsername()));
+        } else {
+            $this->assertFalse(is_string($user->getUsername()));
+        }
     }
 
     /**
