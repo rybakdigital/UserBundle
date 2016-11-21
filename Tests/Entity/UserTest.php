@@ -102,7 +102,11 @@ class UserTest extends TestCase
      */
     public function testGetUsername($user)
     {
-        $this->assertTrue(is_string($user->getUsername()));
+        if ($user->getUsername()) {
+            $this->assertTrue(is_string($user->getUsername()));
+        } else {
+            $this->assertFalse(is_string($user->getUsername()));
+        }
     }
 
     /**
