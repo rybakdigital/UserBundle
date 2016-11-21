@@ -38,3 +38,8 @@
 
 # Composer PHAR
 /composer.phar
+
+# Mac temp files
+._*
+.DS_Store
+.subl*
