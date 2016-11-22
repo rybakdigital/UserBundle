@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppToken\AppTokenAuthorizableInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUserToken\AppUserInterface;
+use \DateTime;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
@@ -91,13 +92,13 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     private $passwordToken;
 
     /**
-     * @ORM\Column(name="api_token", type="string", length=64, nullable=true)
+     * @ORM\Column(name="api_key", type="string", length=64, nullable=true)
      */
     private $apiKey;
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="api_token_expires_at", type="datetime", nullable=true)
+     * @ORM\Column(name="api_key_expires_at", type="datetime", nullable=true)
      */
     private $apiKeyExpiresAt;
 
@@ -223,6 +224,12 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function setSalt($salt)
     {
+        if (!is_null($salt) && (!is_integer($salt) && !is_string($salt))) {
+            throw new \InvalidArgumentException("Salt must be a string", Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->salt = $salt;
+
         return $this;
     }
 
@@ -233,7 +240,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function getSalt()
     {
-        return null;
+        return $this->salt;
     }
 
     /**
@@ -325,7 +332,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function getIsExpired()
     {
-        return $this->isExpired;
+        return (boolean) $this->isExpired;
     }
 
     /**
@@ -348,7 +355,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function getIsLocked()
     {
-        return $this->isLocked;
+        return (boolean) $this->isLocked;
     }
 
     /**
@@ -371,7 +378,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function getIsCredentialsExpired()
     {
-        return $this->isCredentialsExpired;
+        return (boolean) $this->isCredentialsExpired;
     }
 
     /**
@@ -513,6 +520,30 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     public function getLastLoginAt()
     {
         return $this->lastLoginAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return User
+     */
+    public function setCreatedAt(DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**

@@ -275,4 +275,179 @@ class UserTest extends TestCase
     {
         $this->assertTrue(is_array($user->unserialize($user->serialize())));
     }
+
+    public function saltProvider()
+    {
+        return array(
+            array("dshajk423784627cgcUYdgh"),
+            array("bar"),
+            array("555522223111"),
+            array(555522223111),
+            array(""),
+            array(null),
+        );
+    }
+
+    /**
+     * @dataProvider saltProvider
+     */
+    public function testSetSalt($salt)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setSalt($salt), User::class));
+        $this->assertSame($salt, $user->getSalt());
+    }
+
+    public function invalidSaltProvider()
+    {
+        return array(
+            array(new \StdClass),
+            array(array()),
+            array(new User),
+        );
+    }
+
+    /**
+     * @dataProvider invalidSaltProvider
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetSaltFail($salt)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setSalt($salt), User::class));
+        $this->assertSame($salt, $user->getSalt());
+    }
+
+    public function emailProvider()
+    {
+        return array(
+            array("dshajk423784627cgcUYdgh"),
+            array("bar@me.com"),
+            array("555522223111"),
+            array(555522223111),
+            array(""),
+            array(null),
+        );
+    }
+
+    /**
+     * @dataProvider emailProvider
+     */
+    public function testSetEmail($email)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setEmail($email), User::class));
+        $this->assertSame($email, $user->getEmail());
+    }
+
+    public function statusProvider()
+    {
+        return array(
+            array(0, false),
+            array(false, false),
+            array(1, true),
+            array(true, true),
+            array(null, false),
+            array('', false),
+        );
+    }
+
+    /**
+     * @dataProvider statusProvider
+     */
+    public function testSetIsActive($status, $expected)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setIsActive($status), User::class));
+        $this->assertSame($expected, $user->getIsActive());
+    }
+
+    /**
+     * @dataProvider statusProvider
+     */
+    public function testSetIsExpired($status, $expected)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setIsExpired($status), User::class));
+        $this->assertSame($expected, $user->getIsExpired());
+    }
+
+    /**
+     * @dataProvider statusProvider
+     */
+    public function testSetIsLocked($status, $expected)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setIsLocked($status), User::class));
+        $this->assertSame($expected, $user->getIsLocked());
+    }
+
+    /**
+     * @dataProvider statusProvider
+     */
+    public function testSetIsCredentialsExpired($status, $expected)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setIsCredentialsExpired($status), User::class));
+        $this->assertSame($expected, $user->getIsCredentialsExpired());
+    }
+
+    public function datetimeProvider()
+    {
+        return array(
+            array(new \Datetime),
+            array(new \Datetime('yesterday')),
+            array(new \Datetime('2011-01-01T15:03:01.012345Z')),
+        );
+    }
+
+    /**
+     * @dataProvider datetimeProvider
+     */
+    public function testSetExpiresAt($datetime)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setExpiresAt($datetime), User::class));
+        $this->assertSame($datetime, $user->getExpiresAt());
+    }
+
+    /**
+     * @dataProvider datetimeProvider
+     */
+    public function testSetCredentialsExpireAt($datetime)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setCredentialsExpireAt($datetime), User::class));
+        $this->assertSame($datetime, $user->getCredentialsExpireAt());
+    }
+
+    /**
+     * @dataProvider datetimeProvider
+     */
+    public function testSetApiKeyExpiresAt($datetime)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setApiKeyExpiresAt($datetime), User::class));
+        $this->assertSame($datetime, $user->getApiKeyExpiresAt());
+    }
+
+    /**
+     * @dataProvider datetimeProvider
+     */
+    public function testSetLastLoginAt($datetime)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setLastLoginAt($datetime), User::class));
+        $this->assertSame($datetime, $user->getLastLoginAt());
+    }
+
+    /**
+     * @dataProvider datetimeProvider
+     */
+    public function testSetCreatedAt($datetime)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setCreatedAt($datetime), User::class));
+        $this->assertSame($datetime, $user->getCreatedAt());
+    }
 }
