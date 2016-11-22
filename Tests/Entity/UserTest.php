@@ -82,7 +82,11 @@ class UserTest extends TestCase
      */
     public function testGetPassword($user)
     {
-        $this->assertTrue(is_string($user->getPassword()));
+        if (!is_null($user->getPassword())) {
+            $this->assertTrue(is_string($user->getPassword()));
+        } else {
+            $this->assertTrue(is_null($user->getPassword()));
+        }
     }
 
     /**
