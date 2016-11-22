@@ -155,4 +155,120 @@ class UserTest extends TestCase
     {
         $user->setId(new \StdClass());
     }
+
+    public function userIdProvider()
+    {
+        return array(
+            array(1),
+            array(10),
+            array(15),
+            array(10005),
+            array(0),
+            array(1000000000),
+        );
+    }
+
+    /**
+     * @dataProvider userIdProvider
+     */
+    public function testSetId($id)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setId($id), User::class));
+        $this->assertSame($id, $user->getId());
+    }
+
+    public function usernameProvider()
+    {
+        return array(
+            array("john"),
+            array("bar"),
+            array("foo"),
+            array("moo"),
+            array(""),
+            array(null),
+        );
+    }
+
+    /**
+     * @dataProvider usernameProvider
+     */
+    public function testSetUsername($username)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setUsername($username), User::class));
+        $this->assertSame($username, $user->getUsername());
+    }
+
+    public function invalidUsernameProvider()
+    {
+        return array(
+            array(123),
+            array(new \StdClass),
+            array(array()),
+        );
+    }
+
+    /**
+     * @dataProvider invalidUsernameProvider
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetUsernameFail($username)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setUsername($username), User::class));
+    }
+
+    public function userANameProvider()
+    {
+        return array(
+            array("john"),
+            array("bar"),
+            array("foo"),
+            array("moo"),
+            array(""),
+            array(null),
+        );
+    }
+
+    /**
+     * @dataProvider userANameProvider
+     */
+    public function testSetFirstName($name)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setFirstName($name), User::class));
+        $this->assertSame($name, $user->getFirstName());
+    }
+
+    /**
+     * @dataProvider userANameProvider
+     */
+    public function testSetLastName($name)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setLastName($name), User::class));
+        $this->assertSame($name, $user->getLastName());
+    }
+
+    /**
+     * @dataProvider userObjectProvider
+     */
+    public function testSerialize($user)
+    {
+        $this->assertTrue(is_string($user->serialize()));
+    }
+
+    /**
+     * @dataProvider userObjectProvider
+     */
+    public function testUnerialize($user)
+    {
+        $this->assertTrue(is_array($user->unserialize($user->serialize())));
+    }
 }
