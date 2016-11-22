@@ -31,6 +31,16 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     private $username;
 
     /**
+     * @ORM\Column(name="firstname", type="string", length=64)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(name="lastname", type="string", length=64)
+     */
+    private $lastName;
+
+    /**
      * Get id
      *
      * @return integer|null
@@ -45,6 +55,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      *
      * @param   integer     $id
      * @return  User
+     * @throws InvalidArgumentException
      */
     public function setId($id)
     {
@@ -62,9 +73,14 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      *
      * @param string $username
      * @return User
+     * @throws InvalidArgumentException
      */
     public function setUsername($username)
     {
+        if (!is_string($username) && !is_null($username)) {
+            throw new \InvalidArgumentException("Username must be a string", Response::HTTP_BAD_REQUEST);
+        }
+
         $this->username = $username;
 
         return $this;
@@ -78,6 +94,52 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     public function getUsername()
     {
         return $this->username;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
     }
 
     /**
@@ -202,6 +264,12 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function serialize()
     {
+        return serialize(array(
+           $this->id,
+           $this->username,
+           $this->firstName,
+           $this->lastName,
+        ));
     }
 
     /**
@@ -209,6 +277,12 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function unserialize($serialized)
     {
+        return list (
+           $this->id,
+           $this->username,
+           $this->firstName,
+           $this->lastName,
+            ) = unserialize($serialized);
     }
 
     /**
