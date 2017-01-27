@@ -78,28 +78,6 @@ class EmailTest extends TestCase
         $this->assertSame($createdAt, $email->getCreatedAt());
     }
 
-    public function datetimeFailProvider()
-    {
-        return array(
-            [1],
-            ["abc"],
-            [array()],
-            ["2012-02-15"],
-            [123456789],
-            [new \StdClass()],
-        );
-    }
-
-    /**
-     * @dataProvider datetimeFailProvider
-     */
-    public function testCreatedAtFail($createdAt)
-    {
-        $this->setExpectedException(get_class(new \PHPUnit_Framework_Error("", 0, "", 1)));
-        $email = new Email;
-        $this->assertTrue(is_a($email->setCreatedAt($createdAt), Email::class));
-    }
-
     /**
      * @dataProvider datetimeProvider
      */
@@ -108,16 +86,6 @@ class EmailTest extends TestCase
         $email = new Email;
         $this->assertTrue(is_a($email->setValidatedAt($validatedAt), Email::class));
         $this->assertSame($validatedAt, $email->getValidatedAt());
-    }
-
-    /**
-     * @dataProvider datetimeFailProvider
-     */
-    public function testValidatedAtFail($validatedAt)
-    {
-        $this->setExpectedException(get_class(new \PHPUnit_Framework_Error("", 0, "", 1)));
-        $email = new Email;
-        $this->assertTrue(is_a($email->setValidatedAt($validatedAt), Email::class));
     }
 
     public function validationTokenProvider()
@@ -178,25 +146,5 @@ class EmailTest extends TestCase
         $email = new Email;
         $this->assertTrue(is_a($email->setUser($user), Email::class));
         $this->assertSame($user, $email->getUser());
-    }
-
-    public function userFailProvider()
-    {
-        return array(
-            [1],
-            [array()],
-            ["dsa"],
-            [new \Datetime()],
-        );
-    }
-
-    /**
-     * @dataProvider userFailProvider
-     */
-    public function testUserFail($user)
-    {
-        $this->setExpectedException(get_class(new \PHPUnit_Framework_Error("", 0, "", 1)));
-        $email = new Email;
-        $this->assertTrue(is_a($email->setUser($user), Email::class));
     }
 }
