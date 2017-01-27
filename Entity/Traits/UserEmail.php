@@ -53,6 +53,8 @@ trait UserEmail {
     public function removeEmail(Email $email)
     {
         $this->emails->removeElement($email);
+
+        return $this;
     }
 
     /**
