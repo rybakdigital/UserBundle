@@ -13,6 +13,7 @@
     "require": {
         "php": ">=5.5.9",
         "symfony/security": "^3.1",
+        "doctrine/collections": "^1.3",
         "rybakdigital/authentication-bundle": "dev-master"
     },
     "autoload": {
