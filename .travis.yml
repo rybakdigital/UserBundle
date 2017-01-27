@@ -10,7 +10,7 @@ php:
 
 before_script:
   - composer install
-  - composer require symfony/symfony:3.1.*
+  - composer require symfony/symfony:^3.1
 
 script:
   - phpunit --configuration travis.phpunit.xml
