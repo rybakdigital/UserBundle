@@ -9,6 +9,8 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppToken\AppTokenAuthorizableInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUserToken\AppUserInterface;
 use \DateTime;
+use RybakDigital\Bundle\UserBundle\Entity\Email;
+use RybakDigital\Bundle\UserBundle\Entity\Traits\UserEmail;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
@@ -19,6 +21,8 @@ use \DateTime;
  */
 class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizableInterface, AppUserInterface
 {
+    use UserEmail;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -32,7 +36,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     private $username;
 
     /**
-     * @ORM\Column(name="firstname", type="string", length=64)
+     * @ORM\Column(name="firstname", type="string", length=64, nullable=true)
      */
     private $firstName;
 
@@ -50,11 +54,6 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
-
-    /**
-     * @ORM\Column(name="email", type="string", length=128, unique=true)
-     */
-    private $email;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
@@ -87,7 +86,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     private $credentialsExpireAt;
 
     /**
-     * @ORM\Column(name="token", type="string", length=32, nullable=true)
+     * @ORM\Column(name="password_token", type="string", length=32, nullable=true)
      */
     private $passwordToken;
 
@@ -264,29 +263,6 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     public function getPassword()
     {
         return $this->password;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**

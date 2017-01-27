@@ -11,16 +11,26 @@ class UserTest extends TestCase
     {
         $userOne = new User;
         $userOne
-            ->setId(15);
+            ->setId(15)
+            ->setIsExpired(true)
+            ->setIsCredentialsExpired(true);
 
         $userTwo = new User;
+
+        $now = new \Datetime;
+        $now->modify('-1 day'); // Make user accout expired yesterday
+
+        $userThree = new User;
+        $userThree
+            ->setExpiresAt($now)
+            ->setCredentialsExpireAt($now);
 
         // Build array of User objects
         $array = array(
             array($userOne),
             array($userTwo),
+            array($userThree),
         );
-
 
         return $array;
     }
@@ -183,20 +193,8 @@ class UserTest extends TestCase
         $this->assertSame($id, $user->getId());
     }
 
-    public function usernameProvider()
-    {
-        return array(
-            array("john"),
-            array("bar"),
-            array("foo"),
-            array("moo"),
-            array(""),
-            array(null),
-        );
-    }
-
     /**
-     * @dataProvider usernameProvider
+     * @dataProvider userNameProvider
      */
     public function testSetUsername($username)
     {
@@ -226,7 +224,7 @@ class UserTest extends TestCase
         $this->assertTrue(is_a($user->setUsername($username), User::class));
     }
 
-    public function userANameProvider()
+    public function userNameProvider()
     {
         return array(
             array("john"),
@@ -239,7 +237,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * @dataProvider userANameProvider
+     * @dataProvider userNameProvider
      */
     public function testSetFirstName($name)
     {
@@ -250,7 +248,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * @dataProvider userANameProvider
+     * @dataProvider userNameProvider
      */
     public function testSetLastName($name)
     {
@@ -316,28 +314,6 @@ class UserTest extends TestCase
         $user = new User;
         $this->assertTrue(is_a($user->setSalt($salt), User::class));
         $this->assertSame($salt, $user->getSalt());
-    }
-
-    public function emailProvider()
-    {
-        return array(
-            array("dshajk423784627cgcUYdgh"),
-            array("bar@me.com"),
-            array("555522223111"),
-            array(555522223111),
-            array(""),
-            array(null),
-        );
-    }
-
-    /**
-     * @dataProvider emailProvider
-     */
-    public function testSetEmail($email)
-    {
-        $user = new User;
-        $this->assertTrue(is_a($user->setEmail($email), User::class));
-        $this->assertSame($email, $user->getEmail());
     }
 
     public function statusProvider()
@@ -449,5 +425,47 @@ class UserTest extends TestCase
         $user = new User;
         $this->assertTrue(is_a($user->setCreatedAt($datetime), User::class));
         $this->assertSame($datetime, $user->getCreatedAt());
+    }
+
+    public function tokenProvider()
+    {
+        return array(
+            array('abc', 'abc'),
+        );
+    }
+
+    /**
+     * @dataProvider tokenProvider
+     */
+    public function testSetAndSetPasswordToken($token, $expected)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setPasswordToken($token), User::class));
+        $this->assertSame($expected, $user->getPasswordToken());
+    }
+
+    public function apiKeyProvider()
+    {
+        return array(
+            array('abc', 'abc'),
+            array('abc192831', 'abc192831'),
+            array('123456789', '123456789'),
+        );
+    }
+
+    /**
+     * @dataProvider apiKeyProvider
+     */
+    public function testSetAndSetApiKey($key, $expected)
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->setApiKey($key), User::class));
+        $this->assertSame($expected, $user->getApiKey());
+    }
+
+    public function testLoadApiAppByName()
+    {
+        $user = new User;
+        $this->assertTrue(is_a($user->loadApiAppByName('name'), User::class));
     }
 }
