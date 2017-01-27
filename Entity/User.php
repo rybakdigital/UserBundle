@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppToken\AppTokenAuthorizableInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUserToken\AppUserInterface;
+use \DateTime;
+use RybakDigital\Bundle\UserBundle\Entity\Email;
+use RybakDigital\Bundle\UserBundle\Entity\Traits\UserEmail;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
@@ -18,6 +21,8 @@ use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUser
  */
 class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizableInterface, AppUserInterface
 {
+    use UserEmail;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -31,7 +36,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     private $username;
 
     /**
-     * @ORM\Column(name="firstname", type="string", length=64)
+     * @ORM\Column(name="firstname", type="string", length=64, nullable=true)
      */
     private $firstName;
 
@@ -39,6 +44,74 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      * @ORM\Column(name="lastname", type="string", length=64)
      */
     private $lastName;
+
+    /**
+     * @ORM\Column(name="salt", type="string", length=255, nullable=true)
+     */
+    private $salt;
+
+    /**
+     * @ORM\Column(name="password", type="string", length=255)
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    /**
+     * @ORM\Column(name="is_expired", type="boolean")
+     */
+    private $isExpired;
+
+    /**
+     * @ORM\Column(name="is_locked", type="boolean")
+     */
+    private $isLocked;
+
+    /**
+     * @ORM\Column(name="is_credentials_expired", type="boolean")
+     */
+    private $isCredentialsExpired;
+
+    /**
+     * @ORM\Column(name="expires_at", type="datetime", nullable=true)
+     */
+    private $expiresAt;
+
+    /**
+     * @ORM\Column(name="credentials_expire_at", type="datetime", nullable=true)
+     */
+    private $credentialsExpireAt;
+
+    /**
+     * @ORM\Column(name="password_token", type="string", length=32, nullable=true)
+     */
+    private $passwordToken;
+
+    /**
+     * @ORM\Column(name="api_key", type="string", length=64, nullable=true)
+     */
+    private $apiKey;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="api_key_expires_at", type="datetime", nullable=true)
+     */
+    private $apiKeyExpiresAt;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="last_login_at", type="datetime", nullable=true)
+     */
+    private $lastLoginAt;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
 
     /**
      * Get id
@@ -143,63 +216,359 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     }
 
     /**
-     * Checks whether the user's account has expired.
+     * Set salt
      *
-     * Internally, if this method returns false, the authentication system
-     * will throw an AccountExpiredException and prevent login.
+     * @param string $salt
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        if (!is_null($salt) && (!is_integer($salt) && !is_string($salt))) {
+            throw new \InvalidArgumentException("Salt must be a string", Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Get salt
      *
-     * @return bool true if the user's account is non expired, false otherwise
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * Set password
      *
-     * @see AccountExpiredException
+     * @param string $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return (boolean) $this->isActive;
+    }
+
+    /**
+     * Set isExpired
+     *
+     * @param boolean $isExpired
+     * @return User
+     */
+    public function setIsExpired($isExpired)
+    {
+        $this->isExpired = $isExpired;
+
+        return $this;
+    }
+
+    /**
+     * Get isExpired
+     *
+     * @return boolean
+     */
+    public function getIsExpired()
+    {
+        return (boolean) $this->isExpired;
+    }
+
+    /**
+     * Set isLocked
+     *
+     * @param boolean $isLocked
+     * @return User
+     */
+    public function setIsLocked($isLocked)
+    {
+        $this->isLocked = $isLocked;
+
+        return $this;
+    }
+
+    /**
+     * Get isLocked
+     *
+     * @return boolean
+     */
+    public function getIsLocked()
+    {
+        return (boolean) $this->isLocked;
+    }
+
+    /**
+     * Set isCredentialsExpired
+     *
+     * @param boolean $isCredentialsExpired
+     * @return User
+     */
+    public function setIsCredentialsExpired($isCredentialsExpired)
+    {
+        $this->isCredentialsExpired = $isCredentialsExpired;
+
+        return $this;
+    }
+
+    /**
+     * Get isCredentialsExpired
+     *
+     * @return boolean
+     */
+    public function getIsCredentialsExpired()
+    {
+        return (boolean) $this->isCredentialsExpired;
+    }
+
+    /**
+     * Set expiresAt
+     *
+     * @param \DateTime $expiresAt
+     * @return User
+     */
+    public function setExpiresAt(DateTime $expiresAt)
+    {
+        $this->expiresAt = $expiresAt;
+
+        return $this;
+    }
+
+    /**
+     * Get expiresAt
+     *
+     * @return \DateTime
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * Set credentialsExpireAt
+     *
+     * @param \DateTime $credentialsExpireAt
+     * @return User
+     */
+    public function setCredentialsExpireAt(DateTime $credentialsExpireAt)
+    {
+        $this->credentialsExpireAt = $credentialsExpireAt;
+
+        return $this;
+    }
+
+    /**
+     * Get credentialsExpireAt
+     *
+     * @return \DateTime
+     */
+    public function getCredentialsExpireAt()
+    {
+        return $this->credentialsExpireAt;
+    }
+
+    /**
+     * Set passwordToken
+     *
+     * @param string $passwordToken
+     * @return User
+     */
+    public function setPasswordToken($passwordToken)
+    {
+        $this->passwordToken = $passwordToken;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordToken
+     *
+     * @return string
+     */
+    public function getPasswordToken()
+    {
+        return $this->passwordToken;
+    }
+
+    /**
+     * Set apiKey
+     *
+     * @param string $apiKey
+     *
+     * @return User
+     */
+    public function setApiKey($apiKey)
+    {
+        $this->apiKey = $apiKey;
+
+        return $this;
+    }
+
+    /**
+     * Get apiKey
+     *
+     * @return string
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
+
+    /**
+     * Set apiKeyExpiresAt
+     *
+     * @param \DateTime $apiKeyExpiresAt
+     *
+     * @return User
+     */
+    public function setApiKeyExpiresAt(DateTime $apiKeyExpiresAt)
+    {
+        $this->apiKeyExpiresAt = $apiKeyExpiresAt;
+
+        return $this;
+    }
+
+    /**
+     * Get apiKeyExpiresAt
+     *
+     * @return \DateTime
+     */
+    public function getApiKeyExpiresAt()
+    {
+        return $this->apiKeyExpiresAt;
+    }
+
+    /**
+     * Set lastLoginAt
+     *
+     * @param \DateTime $lastLoginAt
+     *
+     * @return User
+     */
+    public function setLastLoginAt(DateTime $lastLoginAt)
+    {
+        $this->lastLoginAt = $lastLoginAt;
+
+        return $this;
+    }
+
+    /**
+     * Get lastLoginAt
+     *
+     * @return \DateTime
+     */
+    public function getLastLoginAt()
+    {
+        return $this->lastLoginAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return User
+     */
+    public function setCreatedAt(DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function isAccountNonExpired()
     {
-        return false;
+        if (true === $this->isExpired) {
+            return false;
+        }
+
+
+        if (null !== $this->expiresAt && $this->expiresAt->getTimestamp() < time()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
-     * Checks whether the user is locked.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a LockedException and prevent login.
-     *
-     * @return bool true if the user is not locked, false otherwise
-     *
-     * @see LockedException
+     * @inheritDoc
      */
     public function isAccountNonLocked()
     {
-        return false;
+        return !$this->isLocked;
     }
 
     /**
-     * Checks whether the user's credentials (password) has expired.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a CredentialsExpiredException and prevent login.
-     *
-     * @return bool true if the user's credentials are non expired, false otherwise
-     *
-     * @see CredentialsExpiredException
+     * @inheritDoc
      */
     public function isCredentialsNonExpired()
     {
-        return false;
+        if (true === $this->isCredentialsExpired) {
+            return false;
+        }
+
+        if (false !== $this->isCredentialsExpired && ($this->credentialsExpireAt instanceof DateTime) && $this->credentialsExpireAt->getTimestamp() < time()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
-     * Checks whether the user is enabled.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a DisabledException and prevent login.
-     *
-     * @return bool true if the user is enabled, false otherwise
-     *
-     * @see DisabledException
+     * @inheritDoc
      */
     public function isEnabled()
     {
-        return false;
+        return $this->getIsActive();
     }
 
     /**
@@ -224,30 +593,6 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     }
 
     /**
-     * Returns the password used to authenticate the user.
-     *
-     * This should be the encoded password. On authentication, a plain-text
-     * password will be salted, encoded, and then compared to this value.
-     *
-     * @return string The password
-     */
-    public function getPassword()
-    {
-        return '';
-    }
-
-    /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * This can return null if the password was not encoded using a salt.
-     *
-     * @return string|null The salt
-     */
-    public function getSalt()
-    {
-    }
-
-    /**
      * Removes sensitive data from the user.
      *
      * This is important if, at any given point, sensitive information like
@@ -256,6 +601,11 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function eraseCredentials()
     {
+        $this
+            ->setPassword(null)
+            ->setApiKey(null)
+            ->setSalt(null);
+
         return $this;
     }
 
@@ -283,14 +633,6 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
            $this->firstName,
            $this->lastName,
             ) = unserialize($serialized);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getApiKey()
-    {
-        return $this->getApiToken();
     }
 
     /**
