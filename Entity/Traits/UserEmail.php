@@ -4,6 +4,11 @@ namespace RybakDigital\Bundle\UserBundle\Entity\Traits;
 use Doctrine\Common\Collections\ArrayCollection;
 use RybakDigital\Bundle\UserBundle\Entity\Email;
 
+/**
+ * RybakDigital\Bundle\UserBundle\Entity\Traits\UserEmail
+ *
+ * @author Kris Rybak <kris.rybak@krisrybak.com>
+ */
 trait UserEmail {
     /**
      * @ORM\OneToOne(targetEntity="Email")
