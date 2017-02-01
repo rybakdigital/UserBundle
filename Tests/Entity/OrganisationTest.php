@@ -246,7 +246,7 @@ class OrganisationTest extends TestCase
 
         $org = $this->generateOrganisation();
 
-        $descendents = array(
+        $ancestors = array(
             $this->generateOrganisation(), // 0
             $this->generateOrganisation(), // 1
             $this->generateOrganisation(), // 2
@@ -257,19 +257,19 @@ class OrganisationTest extends TestCase
             $this->generateOrganisation(), // 7
         );
 
-        $descendents[0]->addParent($descendents[3]); // Level 2
-        $descendents[0]->addParent($descendents[4]);
-        $descendents[0]->addParent($descendents[5]);
-        $descendents[0]->addParent($descendents[6]);
-        $descendents[1]->addParent($descendents[6]);
-        $descendents[3]->addParent($descendents[7]); // Level 3
+        $ancestors[0]->addParent($ancestors[3]); // Level 2
+        $ancestors[0]->addParent($ancestors[4]);
+        $ancestors[0]->addParent($ancestors[5]);
+        $ancestors[0]->addParent($ancestors[6]);
+        $ancestors[1]->addParent($ancestors[6]);
+        $ancestors[3]->addParent($ancestors[7]); // Level 3
 
         $org
-            ->addParent($descendents[0]) // Level 1
-            ->addParent($descendents[1])
-            ->addParent($descendents[2]);
+            ->addParent($ancestors[0]) // Level 1
+            ->addParent($ancestors[1])
+            ->addParent($ancestors[2]);
 
-        $data[] = array($org, $descendents);
+        $data[] = array($org, $ancestors);
 
         return $data;
     }
@@ -290,7 +290,7 @@ class OrganisationTest extends TestCase
     {
         $org = new Organisation;
         $org
-            ->setId(rand(1,100) + 1)
+            ->setId(rand(1000,9000) + rand(1000,9000))
             ->setName('Org name ' . rand(1,100))
             ->setDescription('Description of ' . rand(1,100));
 
