@@ -143,33 +143,6 @@ class UserTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider userObjectProvider
-     * @expectedException InvalidArgumentException
-     */
-    public function testSetIdFail_id_is_string($user)
-    {
-        $user->setId("15");
-    }
-
-    /**
-     * @dataProvider userObjectProvider
-     * @expectedException InvalidArgumentException
-     */
-    public function testSetIdFail_id_is_array($user)
-    {
-        $user->setId(array());
-    }
-
-    /**
-     * @dataProvider userObjectProvider
-     * @expectedException InvalidArgumentException
-     */
-    public function testSetIdFail_id_is_object($user)
-    {
-        $user->setId(new \StdClass());
-    }
-
     public function userIdProvider()
     {
         return array(

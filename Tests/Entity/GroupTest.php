@@ -5,6 +5,7 @@ namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
 use \PHPUnit_Framework_TestCase as TestCase;
 use Doctrine\Common\Collections\ArrayCollection;
 use RybakDigital\Bundle\UserBundle\Entity\Group;
+use RybakDigital\Bundle\UserBundle\Tests\Entity\RoleTest;
 
 class GroupTest extends TestCase
 {
@@ -12,6 +13,7 @@ class GroupTest extends TestCase
     {
         $group = new Group;
         $this->assertTrue(is_a($group->getChildren(), ArrayCollection::class));
+        $this->assertTrue(is_a($group->getRoles(), ArrayCollection::class));
     }
 
     public function idProvider()
@@ -29,23 +31,6 @@ class GroupTest extends TestCase
         $group = new Group;
         $this->assertTrue(is_a($group->setId($id), Group::class));
         $this->assertSame($id, $group->getId());
-    }
-
-    public function idFailProvider()
-    {
-        return array(
-            ['ab'],[array()],[new \StdClass],['12345'],
-        );
-    }
-
-    /**
-     * @dataProvider idFailProvider
-     * @expectedException InvalidArgumentException
-     */
-    public function testIdFail($id)
-    {
-        $group = new Group;
-        $this->assertTrue(is_a($group->setId($id), Group::class));
     }
 
     public function nameProvider()
@@ -143,10 +128,52 @@ class GroupTest extends TestCase
         $this->assertFalse($group->getChildren()->contains($child));
     }
 
+    public function addRoleProvider()
+    {
+        for ($i=0; $i < 10; $i++) {
+            $data[] = array(RoleTest::generateRole());
+        }
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider addRoleProvider
+     */
+    public function testAddRole($role)
+    {
+        $group = new Group;
+        $this->assertTrue(is_a($group->addRole($role), Group::class));
+        $this->assertTrue($group->getRoles()->contains($role));
+    }
+
+    public function removeRoleProvider()
+    {
+        for ($i=0; $i < 5; $i++) {
+            $group = $this->generateGroup();
+            for ($i=0; $i < 5; $i++) {
+                $role = RoleTest::generateRole();
+                $group->addRole($role);
+            }
+            $data[] = array($group, $role);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider removeRoleProvider
+     */
+    public function testRemoveRole($group, $role)
+    {
+        $this->assertTrue(is_a($group->removeRole($role), Group::class));
+        $this->assertFalse($group->getRoles()->contains($role));
+    }
+
     /**
      * @return Group
      */
-    private function generateGroup()
+    public static function generateGroup()
     {
         $group = new Group;
         $group

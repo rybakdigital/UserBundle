@@ -25,23 +25,6 @@ class EmailTest extends TestCase
         $this->assertSame($id, $email->getId());
     }
 
-    public function idFailProvider()
-    {
-        return array(
-            ["one"],[array()],[new \StdClass()],[2.57]
-        );
-    }
-
-    /**
-     * @dataProvider idFailProvider
-     * @expectedException InvalidArgumentException
-     */
-    public function testIdFail($id)
-    {
-        $email = new Email;
-        $this->assertTrue(is_a($email->setId($id), Email::class));
-    }
-
     public function emailProvider()
     {
         return array(
