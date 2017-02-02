@@ -34,23 +34,6 @@ class OrganisationTest extends TestCase
         $this->assertSame($id, $org->getId());
     }
 
-    public function idFailProvider()
-    {
-        return array(
-            ['ab'],[array()],[new \StdClass],['12345'],
-        );
-    }
-
-    /**
-     * @dataProvider idFailProvider
-     * @expectedException InvalidArgumentException
-     */
-    public function testIdFail($id)
-    {
-        $org = new Organisation;
-        $this->assertTrue(is_a($org->setId($id), Organisation::class));
-    }
-
     public function nameProvider()
     {
         return array(

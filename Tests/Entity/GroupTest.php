@@ -31,23 +31,6 @@ class GroupTest extends TestCase
         $this->assertSame($id, $group->getId());
     }
 
-    public function idFailProvider()
-    {
-        return array(
-            ['ab'],[array()],[new \StdClass],['12345'],
-        );
-    }
-
-    /**
-     * @dataProvider idFailProvider
-     * @expectedException InvalidArgumentException
-     */
-    public function testIdFail($id)
-    {
-        $group = new Group;
-        $this->assertTrue(is_a($group->setId($id), Group::class));
-    }
-
     public function nameProvider()
     {
         return array(

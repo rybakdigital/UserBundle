@@ -60,11 +60,7 @@ class Group
      */
     public function setId($id)
     {
-        if (is_integer($id)) {
-            $this->id = $id;
-        } else {
-            throw new \InvalidArgumentException("Group id must be an integer", Response::HTTP_BAD_REQUEST);
-        }
+        $this->id = $id;
 
         return $this;
     }
