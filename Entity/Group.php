@@ -44,11 +44,18 @@ class Group
     private $parent;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="groups")
+     * @ORM\JoinTable(name="acl_roles_to_groups")
+     */
+    private $roles;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->roles    = new ArrayCollection();
     }
 
     /**
@@ -177,5 +184,40 @@ class Group
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * Add role
+     *
+     * @param Role $role
+     * @return Group
+     */
+    public function addRole(Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Remove role
+     *
+     * @param Role $role
+     */
+    public function removeRole(Role $role)
+    {
+        $this->roles->removeElement($role);
+
+        return $this;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return ArrayCollection
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }
