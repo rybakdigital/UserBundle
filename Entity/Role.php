@@ -5,7 +5,8 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Role\RoleInterface;
-use RybakDigital\Bundle\UserBundle\Entity\Group;
+use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleUserOrganisationRole;
+use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleGroups;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity
@@ -16,6 +17,9 @@ use RybakDigital\Bundle\UserBundle\Entity\Group;
  */
 class Role implements RoleInterface
 {
+    use RoleUserOrganisationRole;
+    use RoleGroups;
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
@@ -34,23 +38,19 @@ class Role implements RoleInterface
     private $role;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Group", mappedBy="roles")
-     */
-    private $groups;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->groups   = new ArrayCollection();
+        $this->uors     = new ArrayCollection();
     }
 
     /**
      * Set id
      *
      * @param   integer     $id
-     * @return  Group
+     * @return  Role
      */
     public function setId($id)
     {
@@ -113,40 +113,5 @@ class Role implements RoleInterface
     public function getRole()
     {
         return $this->role;
-    }
-
-    /**
-     * Add group
-     *
-     * @param Group $group
-     * @return Role
-     */
-    public function addGroup(Group $group)
-    {
-        $this->groups[] = $group;
-
-        return $this;
-    }
-
-    /**
-     * Remove group
-     *
-     * @param Group $group
-     */
-    public function removeGroup(Group $group)
-    {
-        $this->groups->removeElement($group);
-
-        return $this;
-    }
-
-    /**
-     * Get groups
-     *
-     * @return ArrayCollection
-     */
-    public function getGroups()
-    {
-        return $this->groups;
     }
 }

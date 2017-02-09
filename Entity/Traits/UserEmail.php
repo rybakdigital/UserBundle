@@ -22,10 +22,6 @@ trait UserEmail {
      */
     private $emails;
 
-    public function __construct() {
-        $this->emails = new ArrayCollection();
-    }
-
     /**
      * Get emails
      */

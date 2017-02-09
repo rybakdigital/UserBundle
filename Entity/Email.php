@@ -4,9 +4,9 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use \DateTime;
-use RybakDigital\Bundle\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
+use \DateTime;
+use RybakDigital\Bundle\UserBundle\Entity\Traits\EmailUser;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Email
@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Email
 {
+    use EmailUser;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -50,12 +52,6 @@ class Email
      * @ORM\Column(name="validated_at", type="datetime", nullable=true)
      */
     private $validatedAt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="emails")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
 
     public function __construct()
     {
@@ -200,28 +196,5 @@ class Email
     public function getIsValid()
     {
         return (boolean) $this->isValid;
-    }
-
-    /**
-     * Set user
-     *
-     * @param User $user
-     * @return Email
-     */
-    public function setUser(User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 }
