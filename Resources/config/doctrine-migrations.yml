@@ -1,0 +1,5 @@
+doctrine_migrations:
+    dir_name: %kernel.root_dir%/../src/RybakDigital/Bundle/UserBundle/DoctrineMigrations
+    namespace: RybakDigital\UserBundle\Migrations
+    table_name: migration_versions_rd_ub
+    name: RybakDigital User Bundle Migrations
