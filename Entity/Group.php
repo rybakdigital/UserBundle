@@ -5,6 +5,7 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
+use RybakDigital\Bundle\UserBundle\Entity\Traits\GroupRoles;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Group
@@ -15,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Group
 {
+    use GroupRoles;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -42,12 +45,6 @@ class Group
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="groups")
-     * @ORM\JoinTable(name="acl_roles_to_groups")
-     */
-    private $roles;
 
     /**
      * Constructor
@@ -184,40 +181,5 @@ class Group
     public function getChildren()
     {
         return $this->children;
-    }
-
-    /**
-     * Add role
-     *
-     * @param Role $role
-     * @return Group
-     */
-    public function addRole(Role $role)
-    {
-        $this->roles[] = $role;
-
-        return $this;
-    }
-
-    /**
-     * Remove role
-     *
-     * @param Role $role
-     */
-    public function removeRole(Role $role)
-    {
-        $this->roles->removeElement($role);
-
-        return $this;
-    }
-
-    /**
-     * Get roles
-     *
-     * @return ArrayCollection
-     */
-    public function getRoles()
-    {
-        return $this->roles;
     }
 }

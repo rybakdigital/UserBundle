@@ -5,8 +5,7 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
-use RybakDigital\Bundle\UserBundle\Entity\User;
-use RybakDigital\Bundle\UserBundle\Entity\Traits\OrganisationUser;
+use RybakDigital\Bundle\UserBundle\Entity\Traits\OrganisationUserOrganisationRole;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Organisation
@@ -17,6 +16,8 @@ use RybakDigital\Bundle\UserBundle\Entity\Traits\OrganisationUser;
  */
 class Organisation
 {
+    use OrganisationUserOrganisationRole;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -59,10 +60,11 @@ class Organisation
     private $ancestors;
 
     public function __construct() {
-        $this->children     = new ArrayCollection();
-        $this->parents      = new ArrayCollection();
-        $this->descendants  = array();
-        $this->ancestors    = array();
+        $this->children         = new ArrayCollection();
+        $this->parents          = new ArrayCollection();
+        $this->descendants      = array();
+        $this->ancestors        = array();
+        $this->uors             = new ArrayCollection();
     }
 
     /**

@@ -9,8 +9,8 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppToken\AppTokenAuthorizableInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUserToken\AppUserInterface;
 use \DateTime;
-use RybakDigital\Bundle\UserBundle\Entity\Email;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\UserEmail;
+use RybakDigital\Bundle\UserBundle\Entity\Traits\UserUserOrganisationRole;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
@@ -22,6 +22,7 @@ use RybakDigital\Bundle\UserBundle\Entity\Traits\UserEmail;
 class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizableInterface, AppUserInterface
 {
     use UserEmail;
+    use UserUserOrganisationRole;
 
     /**
      * @ORM\Column(type="integer")
@@ -113,6 +114,12 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     private $createdAt;
 
+    public function __construct()
+    {
+        $this->uors     = new ArrayCollection();
+        $this->emails   = new ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -127,7 +134,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      * Set id
      *
      * @param   integer     $id
-     * @return  Group
+     * @return  User
      */
     public function setId($id)
     {

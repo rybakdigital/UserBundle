@@ -3,9 +3,8 @@
 namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
 
 use \PHPUnit_Framework_TestCase as TestCase;
-use Doctrine\Common\Collections\ArrayCollection;
 use RybakDigital\Bundle\UserBundle\Entity\Role;
-use RybakDigital\Bundle\UserBundle\Tests\Entity\GroupTest;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class RoleTest extends TestCase
 {
@@ -13,6 +12,7 @@ class RoleTest extends TestCase
     {
         $role = new Role;
         $this->assertTrue(is_a($role->getGroups(), ArrayCollection::class));
+        $this->assertTrue(is_a($role->getUors(), ArrayCollection::class));
     }
 
     public function idProvider()
