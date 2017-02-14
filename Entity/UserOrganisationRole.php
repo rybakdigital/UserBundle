@@ -8,7 +8,7 @@ use RybakDigital\Bundle\UserBundle\Entity\Organisation;
 use RybakDigital\Bundle\UserBundle\Entity\Role;
 
 /**
- * RybakDigital\Bundle\UserBundle\Entity\Email
+ * RybakDigital\Bundle\UserBundle\Entity\UserOrganisationRole
  *
  * @author Kris Rybak <kris.rybak@krisrybak.com>
  * @ORM\Table(name="acl_user_organisation_roles")

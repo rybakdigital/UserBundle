@@ -9,7 +9,7 @@ use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleUserOrganisationRole;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleGroups;
 
 /**
- * RybakDigital\Bundle\UserBundle\Entity
+ * RybakDigital\Bundle\UserBundle\Entity\Role
  *
  * @author Kris Rybak <kris.rybak@krisrybak.com>
  * @ORM\Table(name="acl_roles")

@@ -1,6 +1,6 @@
 <?php
 
-namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
+namespace RybakDigital\Bundle\UserBundle\Tests\Entity\Traits;
 
 use \PHPUnit_Framework_TestCase as TestCase;
 use RybakDigital\Bundle\UserBundle\Entity\Email;

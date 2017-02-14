@@ -3,6 +3,7 @@ namespace RybakDigital\Bundle\UserBundle\Entity\Traits;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\UserOrganisationRole as UserOrganisationRoleTriat;
+use RybakDigital\Bundle\UserBundle\Entity\UserOrganisationRole as Uor;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Traits\OrganisationUserOrganisationRole
@@ -23,7 +24,7 @@ trait OrganisationUserOrganisationRole {
      * @param   UserOrganisationRole     $uor
      * @return  User
      */
-    public function AddUor(UserOrganisationRole $uor)
+    public function addUor(Uor $uor)
     {
         $this->uors[] = $uor;
 
