@@ -20,3 +20,11 @@ Enable bundle in your AppKernel
         new RybakDigital\Bundle\UserBundle\RybakDigitalUserBundle(),
     ]
 ``
+
+Add migrations to your config file:
+```
+# app/config/config.yml
+    imports:
+    ...
+    - { resource: "@RybakDigitalUserBundle/Resources/config/doctrine-migrations.yml" }
+```
