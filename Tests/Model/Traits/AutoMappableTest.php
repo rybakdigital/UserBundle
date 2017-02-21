@@ -4,9 +4,9 @@ namespace RybakDigital\Bundle\UserBundle\Tests\Model\Traits;
 
 use \PHPUnit_Framework_TestCase as TestCase;
 
-use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMapable;
-use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Traits\AutoMapableUser;
-use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Traits\AutoMapableRole;
+use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
+use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Traits\AutoMappableUser;
+use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Traits\AutoMappableRole;
 
 class AutoMapableTest extends TestCase
 {
@@ -20,7 +20,7 @@ class AutoMapableTest extends TestCase
             'firstName' => 'Jane',
         );
 
-        $user = new AutoMapableUser;
+        $user = new AutoMappableUser;
 
         $data[] = array($user, $array);
 
@@ -30,7 +30,7 @@ class AutoMapableTest extends TestCase
             'role'      => 'ROLE_READ_USERS',
         );
 
-        $role = new AutoMapableRole;
+        $role = new AutoMappableRole;
 
         $data[] = array($role, $array);
 
@@ -58,13 +58,13 @@ class AutoMapableTest extends TestCase
     {
         $data = array();
 
-        $user = new AutoMapableUser;
+        $user = new AutoMappableUser;
         $json = '{"id": 7, "username": "jane"}';
 
         $data[] = array($user, $json);
 
         $json = '{"id": 125, "name": "read", "role": "ROLE_READ"}';
-        $role = new AutoMapableRole;
+        $role = new AutoMappableRole;
 
         $data[] = array($role, $json);
 
@@ -95,7 +95,7 @@ class AutoMapableTest extends TestCase
     {
         $data = array();
 
-        $user = new AutoMapableUser;
+        $user = new AutoMappableUser;
         $object = new \StdClass();
         $object->id = 7;
         $object->username = "jane.doe";
@@ -130,7 +130,7 @@ class AutoMapableTest extends TestCase
         );
 
         return array(
-            array($data, json_encode($data), (object) $data, new AutoMapableUser),
+            array($data, json_encode($data), (object) $data, new AutoMappableUser),
         );
     }
 

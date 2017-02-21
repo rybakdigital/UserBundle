@@ -3,11 +3,11 @@
 namespace RybakDigital\Bundle\UserBundle\Model\Traits;
 
 /**
- * RybakDigital\Bundle\UserBundle\Model\Traits\AutoMapable
+ * RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable
  *
  * @author Kris Rybak <kris.rybak@krisrybak.com>
  */
-trait AutoMapable {
+trait AutoMappable {
     /**
      * Turns Model object into StdClass object
      */
