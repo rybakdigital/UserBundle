@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use RybakDigital\Bundle\UserBundle\Entity\User;
 use RybakDigital\Bundle\UserBundle\Entity\Organisation;
 use RybakDigital\Bundle\UserBundle\Entity\Role;
+use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
+use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\UserOrganisationRole
@@ -14,8 +16,10 @@ use RybakDigital\Bundle\UserBundle\Entity\Role;
  * @ORM\Table(name="acl_user_organisation_roles")
  * @ORM\Entity()
  */
-class UserOrganisationRole
+class UserOrganisationRole implements ModelInterface
 {
+    use AutoMappable;
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="uors")
      * @ORM\Id
