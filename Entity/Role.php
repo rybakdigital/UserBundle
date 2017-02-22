@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleUserOrganisationRole;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleGroups;
+use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
+use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Role
@@ -15,10 +17,11 @@ use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleGroups;
  * @ORM\Table(name="acl_roles")
  * @ORM\Entity()
  */
-class Role implements RoleInterface
+class Role implements RoleInterface, ModelInterface
 {
     use RoleUserOrganisationRole;
     use RoleGroups;
+    use AutoMappable;
 
     /**
      * @ORM\Column(name="id", type="integer")

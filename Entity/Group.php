@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\GroupRoles;
+use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
+use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Group
@@ -14,9 +16,10 @@ use RybakDigital\Bundle\UserBundle\Entity\Traits\GroupRoles;
  * @ORM\Table(name="acl_groups")
  * @ORM\Entity(repositoryClass="RybakDigital\Bundle\UserBundle\Entity\GroupRepository")
  */
-class Group
+class Group implements ModelInterface
 {
     use GroupRoles;
+    use AutoMappable;
 
     /**
      * @ORM\Column(type="integer")

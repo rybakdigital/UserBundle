@@ -29,9 +29,12 @@ trait AutoMappable {
      */
     public function toArray()
     {
-        $data = array();
+        if (get_parent_class($this)) {
+            $reflect = new \ReflectionClass(get_parent_class($this));
+        } else {
+            $reflect = new \ReflectionClass($this);
+        }
 
-        $reflect    = new \ReflectionClass(get_parent_class($this));
         $attributes = $reflect->getProperties();
 
         foreach ($attributes as $reflectionProperty) {

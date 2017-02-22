@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 use \DateTime;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\EmailUser;
+use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
+use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Email
@@ -15,9 +17,10 @@ use RybakDigital\Bundle\UserBundle\Entity\Traits\EmailUser;
  * @ORM\Table(name="acl_user_emails")
  * @ORM\Entity(repositoryClass="RybakDigital\Bundle\UserBundle\Entity\EmailRepository")
  */
-class Email
+class Email implements ModelInterface
 {
     use EmailUser;
+    use AutoMappable;
 
     /**
      * @ORM\Column(type="integer")

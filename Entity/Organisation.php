@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\OrganisationUserOrganisationRole;
+use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
+use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Organisation
@@ -14,9 +16,10 @@ use RybakDigital\Bundle\UserBundle\Entity\Traits\OrganisationUserOrganisationRol
  * @ORM\Table(name="acl_organisations")
  * @ORM\Entity(repositoryClass="RybakDigital\Bundle\UserBundle\Entity\OrganisationRepository")
  */
-class Organisation
+class Organisation implements ModelInterface
 {
     use OrganisationUserOrganisationRole;
+    use AutoMappable;
 
     /**
      * @ORM\Column(type="integer")

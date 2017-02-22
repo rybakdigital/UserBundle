@@ -11,6 +11,8 @@ use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUser
 use \DateTime;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\UserEmail;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\UserUserOrganisationRole;
+use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
+use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
@@ -19,10 +21,11 @@ use RybakDigital\Bundle\UserBundle\Entity\Traits\UserUserOrganisationRole;
  * @ORM\Table(name="acl_users")
  * @ORM\Entity(repositoryClass="RybakDigital\Bundle\UserBundle\Entity\UserRepository")
  */
-class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizableInterface, AppUserInterface
+class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizableInterface, AppUserInterface, ModelInterface
 {
     use UserEmail;
     use UserUserOrganisationRole;
+    use AutoMappable;
 
     /**
      * @ORM\Column(type="integer")
