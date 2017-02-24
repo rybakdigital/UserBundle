@@ -29,7 +29,7 @@ class Organisation implements ModelInterface
     private $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=64)
+     * @ORM\Column(name="name", type="string", length=128)
      */
     private $name;
 
@@ -61,6 +61,12 @@ class Organisation implements ModelInterface
      * @var     array
      */
     private $ancestors;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
 
     public function __construct() {
         $this->children         = new ArrayCollection();
@@ -271,5 +277,29 @@ class Organisation implements ModelInterface
                 }
             }
         }
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Organisation
+     */
+    public function setCreatedAt(DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }
