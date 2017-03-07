@@ -2,8 +2,7 @@
 
 namespace RybakDigital\Bundle\UserBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -14,4 +13,36 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    /**
+     * Gets User object by username or valid email
+     *
+     * @param   string  $username
+     * @param   string  $email
+     * @return  User|false          Returns User object if found, otherwise false
+     */
+    public function getUserByUsernameOrValidEmail($username, $email = null)
+    {
+        // Treat username as email if not separate email provided
+        if (is_null($email)) {
+            $email = $username;
+        }
+
+        $q = $this
+            ->createQueryBuilder('u')
+            ->select('u')
+            ->leftJoin('u.emails', 'email')
+            ->where('u.username = :username')
+            ->orWhere('email.email = :email AND email.isValid = true')
+            ->setParameter('username', $username)
+            ->setParameter('email', $email)
+            ->getQuery();
+
+        try {
+            // The Query::getSingleResult() method throws an exception
+            // if there is no record matching the criteria.
+            return $q->getSingleResult();
+        } catch (NoResultException $e) {
+            return false;
+        }
+    }
 }
