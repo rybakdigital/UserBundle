@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\OrganisationUserOrganisationRole;
-use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
-use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
+use Ucc\Model\ModelInterface;
+use Ucc\Model\Traits\AutoMappable;
 use \DateTime;
 
 /**

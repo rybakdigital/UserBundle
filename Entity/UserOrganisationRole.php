@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use RybakDigital\Bundle\UserBundle\Entity\User;
 use RybakDigital\Bundle\UserBundle\Entity\Organisation;
 use RybakDigital\Bundle\UserBundle\Entity\Role;
-use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
-use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
+use Ucc\Model\ModelInterface;
+use Ucc\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\UserOrganisationRole

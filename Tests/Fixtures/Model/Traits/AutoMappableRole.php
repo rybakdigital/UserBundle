@@ -2,8 +2,8 @@
 
 namespace RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Traits;
 
-use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
-use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
+use Ucc\Model\Traits\AutoMappable;
+use Ucc\Model\ModelInterface;
 use RybakDigital\Bundle\UserBundle\Entity\Role;
 
 /**
