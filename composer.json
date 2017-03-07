@@ -15,7 +15,8 @@
         "symfony/security": "^3.1",
         "doctrine/collections": "^1.3",
         "rybakdigital/authentication-bundle": "dev-master",
-        "rybakdigital/ucc": "^1.12"
+        "rybakdigital/ucc": "^1.12",
+        "doctrine/orm": "^2.5"
     },
     "autoload": {
         "psr-4": { "RybakDigital\\Bundle\\UserBundle\\": "" }
