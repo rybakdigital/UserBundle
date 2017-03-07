@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Response;
 use \DateTime;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\EmailUser;
-use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
-use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
+use Ucc\Model\ModelInterface;
+use Ucc\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Email

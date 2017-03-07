@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleUserOrganisationRole;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\RoleGroups;
-use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
-use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
+use Ucc\Model\ModelInterface;
+use Ucc\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\Role

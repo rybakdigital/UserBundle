@@ -11,8 +11,8 @@ use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppUser
 use \DateTime;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\UserEmail;
 use RybakDigital\Bundle\UserBundle\Entity\Traits\UserUserOrganisationRole;
-use RybakDigital\Bundle\UserBundle\Model\ModelInterface;
-use RybakDigital\Bundle\UserBundle\Model\Traits\AutoMappable;
+use Ucc\Model\ModelInterface;
+use Ucc\Model\Traits\AutoMappable;
 
 /**
  * RybakDigital\Bundle\UserBundle\Entity\User
