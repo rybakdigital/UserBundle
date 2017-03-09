@@ -45,7 +45,7 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     private $firstName;
 
     /**
-     * @ORM\Column(name="lastname", type="string", length=64)
+     * @ORM\Column(name="lastname", type="string", length=64, nullable=true)
      */
     private $lastName;
 
