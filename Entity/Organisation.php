@@ -30,6 +30,11 @@ class Organisation implements ModelInterface
     private $id;
 
     /**
+     * @ORM\Column(name="namespace", type="string", length=128, unique=true)
+     */
+    private $namespace;
+
+    /**
      * @ORM\Column(name="name", type="string", length=128)
      */
     private $name;
@@ -96,6 +101,29 @@ class Organisation implements ModelInterface
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get namespace
+     *
+     * @return  string
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    /**
+     * Set namespace
+     *
+     * @param   string $namespace
+     * @return  Organisation
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = strtolower(str_replace(" ", "" ,preg_replace("/[^A-Za-z0-9 ]/", "", $namespace)));
 
         return $this;
     }

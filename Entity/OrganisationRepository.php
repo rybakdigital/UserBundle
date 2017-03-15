@@ -3,6 +3,7 @@
 namespace RybakDigital\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * OrganisationRepository
@@ -12,4 +13,44 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrganisationRepository extends EntityRepository
 {
+    /**
+     * Check if organisation of given Id or Namespace exists
+     */
+    public function isValidOrganisation($orgSpec, $returnOrg = false)
+    {
+        if ($organisation = $this->getOrganisationByIdOrName($orgSpec)) {
+            if ($returnOrg) {
+                return $organisation;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets Organisation object by id or valid namespace
+     *
+     * @param   string|int          $orgSpec
+     * @return  Organisation|false  Returns Organisation object if found, otherwise false
+     */
+    public function getOrganisationByIdOrName($orgSpec)
+    {
+        $q = $this
+            ->createQueryBuilder('o')
+            ->select('o')
+            ->where('o.id = :orgSpec')
+            ->orWhere('o.name = :orgSpec')
+            ->setParameter('orgSpec', $orgSpec)
+            ->getQuery();
+
+        try {
+            // The Query::getSingleResult() method throws an exception
+            // if there is no record matching the criteria.
+            return $q->getSingleResult();
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

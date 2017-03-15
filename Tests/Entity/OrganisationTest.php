@@ -51,6 +51,27 @@ class OrganisationTest extends TestCase
         $this->assertSame($name, $org->getName());
     }
 
+    public function namespaceProvider()
+    {
+        return array(
+            array('Organisation 123', 'organisation123'),
+            array('Bradley-Dyer-Media', 'bradleydyermedia'),
+            array('Bradley DyerMedia', 'bradleydyermedia'),
+            array('!@£$%^&*()-_A', 'a'),
+            array('ABCDE', 'abcde'),
+        );
+    }
+
+    /**
+     * @dataProvider namespaceProvider
+     */
+    public function testNamespacePass($namespace, $expected)
+    {
+        $org = new Organisation;
+        $this->assertTrue(is_a($org->setNamespace($namespace), Organisation::class));
+        $this->assertSame($expected, $org->getNamespace());
+    }
+
     public function descriptionProvider()
     {
         return array(
@@ -275,6 +296,7 @@ class OrganisationTest extends TestCase
         $org
             ->setId(rand(1000,9000) + rand(1000,9000))
             ->setName('Org name ' . rand(1,100))
+            ->setNamespace($this->getName())
             ->setDescription('Description of ' . rand(1,100));
 
         return $org;
