@@ -123,7 +123,7 @@ class Organisation implements ModelInterface
      */
     public function setNamespace($namespace)
     {
-        $this->namespace = $namespace;
+        $this->namespace = strtolower(str_replace(" ", "" ,preg_replace("/[^A-Za-z0-9 ]/", "", $namespace)));
 
         return $this;
     }
