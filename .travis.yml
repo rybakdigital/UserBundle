@@ -16,4 +16,4 @@ before_script:
   - composer require symfony/symfony:^3.1
 
 script:
-  - phpunit --configuration travis.phpunit.xml
+  - vendor/bin/phpunit --configuration travis.phpunit.xml
