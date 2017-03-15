@@ -30,7 +30,7 @@ class Organisation implements ModelInterface
     private $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=128, unique=true)
+     * @ORM\Column(name="namespace", type="string", length=128, unique=true)
      */
     private $namespace;
 
