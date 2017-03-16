@@ -41,7 +41,7 @@ class OrganisationRepository extends EntityRepository
             ->createQueryBuilder('o')
             ->select('o')
             ->where('o.id = :orgSpec')
-            ->orWhere('o.name = :orgSpec')
+            ->orWhere('o.namespace = :orgSpec')
             ->setParameter('orgSpec', $orgSpec)
             ->getQuery();
 
