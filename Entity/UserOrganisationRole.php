@@ -14,7 +14,7 @@ use Ucc\Model\Traits\AutoMappable;
  *
  * @author Kris Rybak <kris.rybak@krisrybak.com>
  * @ORM\Table(name="acl_user_organisation_roles")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="RybakDigital\Bundle\UserBundle\Entity\UserOrganisationRoleRepository")
  */
 class UserOrganisationRole implements ModelInterface
 {
