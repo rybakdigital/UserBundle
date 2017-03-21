@@ -13,4 +13,32 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserOrganisationRoleRepository extends EntityRepository
 {
+    public function getUserOrganisations($id, $roles = array())
+    {
+        $orgs = array();
+
+        $qb = $this
+            ->createQueryBuilder('uors');
+
+        $qb
+            ->select(array('uors', 'organisations'))
+            ->leftJoin('uors.user', 'user')
+            ->leftJoin('uors.role', 'roles')
+            ->leftJoin('uors.organisation', 'organisations')
+            ->andWhere('user.id = :id')
+            ->andWhere($qb->expr()->in('roles.role', ':roles'))
+            ->setParameter('id', $id)
+            ->setParameter('roles', $roles);
+
+        $query = $qb->getQuery();
+
+        $res = $query->getResult();
+
+        foreach ($res as $uor) {
+            // Get unique organisations only
+            $orgs[$uor->getOrganisation()->getId()] = $uor->getOrganisation();
+        }
+
+        return $orgs;
+    }
 }
