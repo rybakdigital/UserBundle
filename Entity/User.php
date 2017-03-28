@@ -606,11 +606,6 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function eraseCredentials()
     {
-        $this
-            ->setPassword(null)
-            ->setApiKey(null)
-            ->setSalt(null);
-
         return $this;
     }
 
