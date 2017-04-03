@@ -30,6 +30,11 @@ class Email implements ModelInterface
     private $id;
 
     /**
+     * @ORM\Column(type="guid", unique=true)
+     */
+    private $guid;
+
+    /**
      * @ORM\Column(name="email", type="string", length=128, nullable=true)
      */
     private $email;
@@ -80,6 +85,29 @@ class Email implements ModelInterface
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get guid
+     *
+     * @return guid
+     */
+    public function getGuid()
+    {
+        return $this->guid;
+    }
+
+    /**
+     * Set guid
+     *
+     * @param   integer     $guid
+     * @return  Group
+     */
+    public function setGuid($guid)
+    {
+        $this->guid = $guid;
 
         return $this;
     }
