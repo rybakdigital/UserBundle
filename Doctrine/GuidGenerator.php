@@ -13,7 +13,7 @@ use Ucc\Crypt\Hash;
  */
 class GuidGenerator extends AbstractIdGenerator
 {
-    public function generate(EntityManager $em, $entity, $length = 10)
+    public function generate(EntityManager $em, $entity, $length = 11)
     {
         $entityName = $em->getClassMetadata(get_class($entity))->getName();
 
