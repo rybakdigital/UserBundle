@@ -20,7 +20,6 @@ use Ucc\Model\Traits\AutoMappable;
 class Role implements RoleInterface, ModelInterface
 {
     use RoleUserOrganisationRole;
-    use RoleGroups;
     use AutoMappable;
 
     /**
