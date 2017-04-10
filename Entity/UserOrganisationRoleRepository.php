@@ -47,4 +47,32 @@ class UserOrganisationRoleRepository extends EntityRepository
 
         return $orgs;
     }
+
+    public function getUserRolesForOrganisation($user, $organisation)
+    {
+        $roles = array();
+
+        $qb = $this
+            ->createQueryBuilder('uors');
+
+        $qb
+            ->select(array('uors', 'roles'))
+            ->leftJoin('uors.user', 'user')
+            ->leftJoin('uors.role', 'roles')
+            ->leftJoin('uors.organisation', 'organisation')
+            ->andWhere('user.id = :userId')
+            ->andWhere('organisation.id = :orgId')
+            ->setParameter('userId', $user->getId())
+            ->setParameter('orgId', $organisation->getId());
+
+            $query = $qb->getQuery();
+
+            $res = $query->getResult();
+
+        foreach ($res as $uor) {
+            $roles[] = $uor->getRole();
+        }
+
+        return $roles;
+    }
 }
