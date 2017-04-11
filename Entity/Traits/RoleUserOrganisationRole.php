@@ -11,8 +11,6 @@ use RybakDigital\Bundle\UserBundle\Entity\UserOrganisationRole as Uor;
  * @author Kris Rybak <kris.rybak@krisrybak.com>
  */
 trait RoleUserOrganisationRole {
-    use UserOrganisationRoleTriat;
-
     /**
      * @ORM\OneToMany(targetEntity="UserOrganisationRole", mappedBy="role")
      */

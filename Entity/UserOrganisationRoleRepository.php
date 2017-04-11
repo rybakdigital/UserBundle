@@ -70,9 +70,34 @@ class UserOrganisationRoleRepository extends EntityRepository
             $res = $query->getResult();
 
         foreach ($res as $uor) {
-            $roles[] = $uor->getRole();
+            $roles[$uor->getRole()->getId()] = $uor->getRole();
         }
 
         return $roles;
+    }
+
+    public function getUserOrganisationRole($user, $organisation, $role)
+    {
+        $qb = $this
+            ->createQueryBuilder('uors');
+
+        $qb
+            ->select('uors')
+            ->andWhere('uors.user = :user')
+            ->andWhere('uors.organisation = :organisation')
+            ->andWhere('uors.role = :role')
+            ->setParameter('user', $user)
+            ->setParameter('organisation', $organisation)
+            ->setParameter('role', $role);
+
+        $query = $qb->getQuery();
+
+        try {
+            // The Query::getSingleResult() method throws an exception
+            // if there is no record matching the criteria.
+            return $query->getSingleResult();
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
