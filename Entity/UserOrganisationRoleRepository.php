@@ -100,4 +100,44 @@ class UserOrganisationRoleRepository extends EntityRepository
             return false;
         }
     }
+
+    public function getUsersAndRolesForGivenOrganisation($organisation)
+    {
+        $users = array();
+
+        $qb = $this
+            ->createQueryBuilder('uors');
+
+        $qb
+            ->select('uors')
+            ->leftJoin('uors.user', 'user')
+            ->leftJoin('uors.role', 'role')
+            ->addSelect('user')
+            ->addSelect('role')
+            ->andWhere('uors.organisation = :organisation')
+            ->setParameter('organisation', $organisation);
+
+        $query = $qb->getQuery();
+
+        try {
+            // The Query::getSingleResult() method throws an exception
+            // if there is no record matching the criteria.
+            $res =  $query->getResult();
+
+            foreach ($res as $uor) {
+                if (!array_key_exists($uor->getUser()->getId(), $users)) {
+                    $users[$uor->getUser()->getId()] = $uor->getUser();
+                    $users[$uor->getUser()->getId()]->roles = array();
+                }
+
+                if (!array_key_exists($uor->getRole()->getId(), $users[$uor->getUser()->getId()]->roles)) {
+                    $users[$uor->getUser()->getId()]->roles[$uor->getRole()->getId()] = $uor->getRole();
+                }
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $users;
+    }
 }
