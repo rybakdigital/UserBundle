@@ -4,6 +4,7 @@ namespace RybakDigital\Bundle\UserBundle\Doctrine;
 
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMException;
 use Ucc\Crypt\Hash;
 
 /**
@@ -23,7 +24,14 @@ class GuidGenerator extends AbstractIdGenerator
 
         while (true) {
             $id = Hash::generateSalt($length, false);
-            $item = $em->getRepository($entityName)->findOneByGuid($id);
+            // Check whether to use "guid" or "id" as index
+            if (property_exists($entityName, 'guid')) {
+                $methodName = 'findOneByGuid';
+            } else {
+                $methodName = 'findOneById';
+            }
+
+            $item = $em->getRepository($entityName)->$methodName($id);
 
             if (!$item) {
                 return $id;
