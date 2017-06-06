@@ -117,10 +117,17 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     private $createdAt;
 
+    /**
+     * @var \DateTime
+     * @ORM\OneToMany(targetEntity="App", mappedBy="user")
+     */
+    private $apps;
+
     public function __construct()
     {
         $this->uors     = new ArrayCollection();
         $this->emails   = new ArrayCollection();
+        $this->apps     = new ArrayCollection();
     }
 
     /**
@@ -641,5 +648,39 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
     public function loadApiAppByName($name)
     {
         return $this;
+    }
+
+    /**
+     * Add app
+     *
+     * @param \RybakDigital\Bundle\UserBundle\Entity\App $app
+     *
+     * @return User
+     */
+    public function addApp(\RybakDigital\Bundle\UserBundle\Entity\App $app)
+    {
+        $this->apps[] = $app;
+
+        return $this;
+    }
+
+    /**
+     * Remove app
+     *
+     * @param \RybakDigital\Bundle\UserBundle\Entity\App $app
+     */
+    public function removeApp(\RybakDigital\Bundle\UserBundle\Entity\App $app)
+    {
+        $this->apps->removeElement($app);
+    }
+
+    /**
+     * Get apps
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getApps()
+    {
+        return $this->apps;
     }
 }
