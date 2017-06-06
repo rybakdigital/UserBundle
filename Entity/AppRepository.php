@@ -2,6 +2,8 @@
 
 namespace RybakDigital\Bundle\UserBundle\Entity;
 
+use Ucc\Db\Filter\Filter;
+
 /**
  * AppRepository
  *
@@ -10,4 +12,98 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
  */
 class AppRepository extends \Doctrine\ORM\EntityRepository
 {
+    public static function getValidFilters()
+    {
+        return array_merge(
+            self::getAppFilters(),
+            self::getUserFilters()
+        );
+    }
+
+    public static function getAppFilters()
+    {
+        return array(
+            'app.id',
+            'app.name',
+            'app.isActive',
+        );
+    }
+
+    public static function getUserFilters()
+    {
+        return array(
+            'user.id',
+            'user.username',
+        );
+    }
+
+    public static function getValidSorts() {
+        return array(
+            'app.id',
+            'app.name',
+            'app.isActive',
+            'user.id',
+            'user.username',
+        );
+    }
+
+    /**
+     * Returns list of Apps objects
+     *
+     * @param   integer     $limit      Limit to apply
+     * @param   integer     $offset     Offset to apply
+     * @param   array       $filters    List of Criterion objects to apply
+     * @param   array       $sorts      List of sorts to apply
+     * @param   boolean     $totalcount Whether to return total number of objects in the set
+     * @param   array       $args       Array of arguments you may wish to pass to filter
+     * @return  array
+     */
+    public function getApps($limit = null, $offset = null, $filters = array(), $sorts = array(), $totalcount = false, $args = array())
+    {
+        $qb = $this
+            ->createQueryBuilder('app');
+
+        $qb
+            ->leftJoin('app.user', 'user');
+
+        if (!$totalcount) {
+            // Add limit only if not set to 0
+            // as this allows to cancel limit and get all events
+            if (!is_null($limit) && $limit != 0) {
+                $qb->setMaxResults($limit);
+            }
+
+            // Add offset only if not set to 0
+            // as this allows to cancel offset
+            if (!is_null($offset) && $offset != 0) {
+                $qb->setFirstResult($offset);
+            }
+        }
+
+        // If there are any filters
+        if(!empty($filters)) {
+            $dql = Filter::filtersToDqlClause($filters, $qb);
+        }
+
+        // Add sorts
+        foreach ($sorts as $sort) {
+            $qb->addOrderBy($sort->field(), $sort->direction());
+        }
+
+        // Default sorts if none present
+        if (empty($sorts)) {
+            $qb
+                ->addOrderBy('app.name', 'ASC');
+        }
+
+        $query = $qb->getQuery();
+
+        $res = $query->getResult();
+
+        if ($totalcount) {
+            return array('results' => array_slice($res, $offset, $limit), 'totalcount' => count($res));
+        }
+
+        return array('results' => $res, 'totalcount' => count($res));
+    }
 }

@@ -4,6 +4,7 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use RybakDigital\Bundle\AuthenticationBundle\Security\Authentication\Api\AppToken\AppTokenAuthorizableInterface;
@@ -647,7 +648,15 @@ class User implements AdvancedUserInterface, \Serializable, AppTokenAuthorizable
      */
     public function loadApiAppByName($name)
     {
-        return $this;
+        $apps = $this->getApps();
+
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("name", $name))
+            ->andWhere(Criteria::expr()->eq("isActive", true))
+            ->setFirstResult(0)
+            ->setMaxResults(1);
+
+        return $apps->matching($criteria)->first();
     }
 
     /**
