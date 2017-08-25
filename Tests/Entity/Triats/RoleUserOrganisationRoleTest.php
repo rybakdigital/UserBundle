@@ -9,23 +9,23 @@ use RybakDigital\Bundle\UserBundle\Entity\Role;
 
 class RoleUserOrganisationRoleTest extends TestCase
 {
-    public function addUorProvider()
-    {
-        $data = array(
-            array(new UserOrganisationRole())
-        );
+    // public function addUorProvider()
+    // {
+    //     $data = array(
+    //         array(new UserOrganisationRole())
+    //     );
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
-    /**
-     * @dataProvider addUorProvider
-     */
-    public function testAddUor($uor)
-    {
-        $role = new Role;
-        $role->addUor($uor);
-        $this->assertContains(RoleUserOrganisationRole::class, class_uses($role));
-        $this->assertTrue($role->getUors()->contains($uor));
-    }
+    // /**
+    //  * @dataProvider addUorProvider
+    //  */
+    // public function testAddUor($uor)
+    // {
+    //     $role = new Role;
+    //     $role->addUor($uor);
+    //     $this->assertContains(RoleUserOrganisationRole::class, class_uses($role));
+    //     $this->assertTrue($role->getUors()->contains($uor));
+    // }
 }

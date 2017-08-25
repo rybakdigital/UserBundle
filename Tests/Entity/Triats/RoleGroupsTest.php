@@ -11,36 +11,36 @@ use RybakDigital\Bundle\UserBundle\Tests\Entity\GroupTest;
 
 class RoleGroupsTest extends TestCase
 {
-    public function testAddGroup()
-    {
-        $role   = new Role;
-        $group  = new Group;
-        $role->addGroup($group);
-        $this->assertContains(RoleGroups::class, class_uses($role));
-        $this->assertTrue($role->getGroups()->contains($group));
-    }
+    // public function testAddGroup()
+    // {
+    //     $role   = new Role;
+    //     $group  = new Group;
+    //     $role->addGroup($group);
+    //     $this->assertContains(RoleGroups::class, class_uses($role));
+    //     $this->assertTrue($role->getGroups()->contains($group));
+    // }
 
-    public function removeGroupProvider()
-    {
-        for ($i=0; $i < 5; $i++) {
-            $role = RoleTest::generateRole();
-            for ($i=0; $i < 5; $i++) {
-                $group = GroupTest::generateGroup();
-                $role->addGroup($group);
-            }
-            $data[] = array($role, $group);
-        }
+    // public function removeGroupProvider()
+    // {
+    //     for ($i=0; $i < 5; $i++) {
+    //         $role = RoleTest::generateRole();
+    //         for ($i=0; $i < 5; $i++) {
+    //             $group = GroupTest::generateGroup();
+    //             $role->addGroup($group);
+    //         }
+    //         $data[] = array($role, $group);
+    //     }
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
-    /**
-     * @dataProvider removeGroupProvider
-     */
-    public function testRemoveGroup($role, $group)
-    {
-        $this->assertTrue(is_a($role->removeGroup($group), Role::class));
-        $this->assertContains(RoleGroups::class, class_uses($role));
-        $this->assertFalse($role->getGroups()->contains($group));
-    }
+    // /**
+    //  * @dataProvider removeGroupProvider
+    //  */
+    // public function testRemoveGroup($role, $group)
+    // {
+    //     $this->assertTrue(is_a($role->removeGroup($group), Role::class));
+    //     $this->assertContains(RoleGroups::class, class_uses($role));
+    //     $this->assertFalse($role->getGroups()->contains($group));
+    // }
 }

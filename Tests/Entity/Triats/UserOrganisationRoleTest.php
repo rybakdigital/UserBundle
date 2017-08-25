@@ -11,23 +11,23 @@ use RybakDigital\Bundle\UserBundle\Entity\UserOrganisationRole as Uor;
 
 class UserOrganisationRoleTest extends TestCase
 {
-    public function addUorProvider()
-    {
-        $data = array(
-            array(new Role(), new Uor()),
-            array(new User(), new Uor()),
-            array(new Organisation(), new Uor()),
-        );
+    // public function addUorProvider()
+    // {
+    //     $data = array(
+    //         array(new Role(), new Uor()),
+    //         array(new User(), new Uor()),
+    //         array(new Organisation(), new Uor()),
+    //     );
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
-    /**
-     * @dataProvider addUorProvider
-     */
-    public function testRemoveUor($parent, $uor)
-    {
-        $this->assertTrue(is_a($parent->removeUor($uor), get_class($parent)));
-        $this->assertFalse($parent->getUors()->contains($uor));
-    }
+    // /**
+    //  * @dataProvider addUorProvider
+    //  */
+    // public function testRemoveUor($parent, $uor)
+    // {
+    //     $this->assertTrue(is_a($parent->removeUor($uor), get_class($parent)));
+    //     $this->assertFalse($parent->getUors()->contains($uor));
+    // }
 }
