@@ -3,10 +3,56 @@
 namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
 
 use \PHPUnit_Framework_TestCase as TestCase;
-use RybakDigital\Bundle\UserBundle\Entity\User;
+use RybakDigital\Bundle\UserBundle\Entity\User as Base_User;
+use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Entity\User;
+use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Utils\Basic;
 
 class UserTest extends TestCase
 {
+    public function idProvider()
+    {
+        $array = array();
+
+        foreach (Basic::integerIdProvider() as $id) {
+            array_push($array, array($id));
+        }
+
+        return $array;
+    }
+
+    public function usernameProvider()
+    {
+        $array = array();
+
+        foreach (Basic::stringProvider() as $username) {
+            array_push($array, array($username));
+        }
+
+        return $array;
+    }
+
+    /**
+     * @dataProvider idProvider
+     */
+    public function testSetGetId($id)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setId($id), Base_User::class));
+        $this->assertSame($id, $user->getId());
+    }
+
+    /**
+     * @dataProvider usernameProvider
+     */
+    public function testSetGetUsername($username)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setUsername($username), Base_User::class));
+        $this->assertSame($username, $user->getUsername());
+    }
+
     // public function userObjectProvider()
     // {
     //     $userOne = new User;
