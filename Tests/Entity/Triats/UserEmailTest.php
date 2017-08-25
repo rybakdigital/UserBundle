@@ -10,11 +10,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class UserEmailTest extends TestCase
 {
-    // public function testGetEmails()
-    // {
-    //     $user = new User();
-    //     $this->assertTrue(is_a($user->getEmails(), ArrayCollection::class));
-    // }
+    public function testGetEmails()
+    {
+        $user = new User();
+        $this->assertTrue(is_a($user->getEmails(), ArrayCollection::class));
+    }
 
     // public function emailProvider()
     // {

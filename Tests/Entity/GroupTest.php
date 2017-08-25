@@ -3,12 +3,34 @@
 namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
 
 use \PHPUnit_Framework_TestCase as TestCase;
-use Doctrine\Common\Collections\ArrayCollection;
-use RybakDigital\Bundle\UserBundle\Entity\Group;
-use RybakDigital\Bundle\UserBundle\Tests\Entity\RoleTest;
+
+use RybakDigital\Bundle\UserBundle\Entity\Group as BaseGroup;
+use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Utils\Basic;
 
 class GroupTest extends TestCase
 {
+    public function idProvider()
+    {
+        $array = array();
+
+        foreach (Basic::integerIdProvider() as $id) {
+            array_push($array, array($id));
+        }
+
+        return $array;
+    }
+
+    /**
+     * @dataProvider idProvider
+     */
+    public function testSetGetId($id)
+    {
+        $group = new BaseGroup;
+
+        $this->assertTrue(is_a($group->setId($id), BaseGroup::class));
+        $this->assertSame($id, $group->getId());
+    }
+
     // public function testConstructor()
     // {
     //     $group = new Group;

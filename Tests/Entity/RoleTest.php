@@ -3,11 +3,33 @@
 namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
 
 use \PHPUnit_Framework_TestCase as TestCase;
-use RybakDigital\Bundle\UserBundle\Entity\Role;
-use Doctrine\Common\Collections\ArrayCollection;
+use RybakDigital\Bundle\UserBundle\Entity\Role as Base_Role;
+use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Utils\Basic;
 
 class RoleTest extends TestCase
 {
+    public function idProvider()
+    {
+        $array = array();
+
+        foreach (Basic::integerIdProvider() as $id) {
+            array_push($array, array($id));
+        }
+
+        return $array;
+    }
+
+    /**
+     * @dataProvider idProvider
+     */
+    public function testSetGetId($id)
+    {
+        $role = new Base_Role;
+
+        $this->assertTrue(is_a($role->setId($id), Base_Role::class));
+        $this->assertSame($id, $role->getId());
+    }
+
     // public function testConstructor()
     // {
     //     $role = new Role;

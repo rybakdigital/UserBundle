@@ -3,11 +3,33 @@
 namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
 
 use \PHPUnit_Framework_TestCase as TestCase;
-use RybakDigital\Bundle\UserBundle\Entity\Organisation;
-use Doctrine\Common\Collections\ArrayCollection;
+use RybakDigital\Bundle\UserBundle\Entity\Organisation as Base_Organisation;
+use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Utils\Basic;
 
 class OrganisationTest extends TestCase
 {
+    public function idProvider()
+    {
+        $array = array();
+
+        foreach (Basic::integerIdProvider() as $id) {
+            array_push($array, array($id));
+        }
+
+        return $array;
+    }
+
+    /**
+     * @dataProvider idProvider
+     */
+    public function testSetGetId($id)
+    {
+        $organisation = new Base_Organisation;
+
+        $this->assertTrue(is_a($organisation->setId($id), Base_Organisation::class));
+        $this->assertSame($id, $organisation->getId());
+    }
+
     // public function testConstructor()
     // {
     //     $org = new Organisation;

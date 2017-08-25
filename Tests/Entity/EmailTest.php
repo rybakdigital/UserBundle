@@ -3,11 +3,33 @@
 namespace RybakDigital\Bundle\UserBundle\Tests\Entity;
 
 use \PHPUnit_Framework_TestCase as TestCase;
-use RybakDigital\Bundle\UserBundle\Entity\Email;
-use RybakDigital\Bundle\UserBundle\Entity\User;
+use RybakDigital\Bundle\UserBundle\Entity\Email as Base_Email;
+use RybakDigital\Bundle\UserBundle\Tests\Fixtures\Model\Utils\Basic;
 
 class EmailTest extends TestCase
 {
+    public function idProvider()
+    {
+        $array = array();
+
+        foreach (Basic::integerIdProvider() as $id) {
+            array_push($array, array($id));
+        }
+
+        return $array;
+    }
+
+    /**
+     * @dataProvider idProvider
+     */
+    public function testSetGetId($id)
+    {
+        $email = new Base_Email;
+
+        $this->assertTrue(is_a($email->setId($id), Base_Email::class));
+        $this->assertSame($id, $email->getId());
+    }
+
     // public function idProvider()
     // {
     //     return array(

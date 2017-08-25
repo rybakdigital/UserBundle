@@ -31,6 +31,17 @@ class UserTest extends TestCase
         return $array;
     }
 
+    public function invalidUsernameProvider()
+    {
+        $array = array(
+            array(1),
+            array(array()),
+            array(new \StdClass),
+        );
+
+        return $array;
+    }
+
     /**
      * @dataProvider idProvider
      */
@@ -46,6 +57,18 @@ class UserTest extends TestCase
      * @dataProvider usernameProvider
      */
     public function testSetGetUsername($username)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setUsername($username), Base_User::class));
+        $this->assertSame($username, $user->getUsername());
+    }
+
+    /**
+     * @dataProvider invalidUsernameProvider
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetGetUsernameFail($username)
     {
         $user = new User;
 
