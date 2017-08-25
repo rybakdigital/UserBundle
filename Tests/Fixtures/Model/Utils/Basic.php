@@ -22,12 +22,12 @@ class Basic
         );
     }
 
-    public static function stringProvider($count = 10, $min = 1, $max = 20)
+    public static function stringProvider($count = 10, $min = 1, $max = 20, $base64 = false)
     {
         $array = array();
 
         for ($i=0; $i < $count; $i++) { 
-            array_push($array, Hash::generateSalt(rand($min, $max), false));
+            array_push($array, Hash::generateSalt(rand($min, $max), $base64));
         }
 
         return $array;

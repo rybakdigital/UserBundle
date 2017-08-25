@@ -31,10 +31,31 @@ class UserTest extends TestCase
         return $array;
     }
 
+    public function stringProvider()
+    {
+        $array = array();
+
+        foreach (Basic::stringProvider() as $username) {
+            array_push($array, array($username));
+        }
+
+        return $array;
+    }
+
     public function invalidUsernameProvider()
     {
         $array = array(
             array(1),
+            array(array()),
+            array(new \StdClass),
+        );
+
+        return $array;
+    }
+
+    public function invalidSaltProvider()
+    {
+        $array = array(
             array(array()),
             array(new \StdClass),
         );
@@ -74,6 +95,62 @@ class UserTest extends TestCase
 
         $this->assertTrue(is_a($user->setUsername($username), Base_User::class));
         $this->assertSame($username, $user->getUsername());
+    }
+
+    /**
+     * @dataProvider stringProvider
+     */
+    public function testSetGetFirstName($firstName)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setFirstName($firstName), Base_User::class));
+        $this->assertSame($firstName, $user->getFirstName());
+    }
+
+    /**
+     * @dataProvider stringProvider
+     */
+    public function testSetGetLastName($lastName)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setLastName($lastName), Base_User::class));
+        $this->assertSame($lastName, $user->getLastName());
+    }
+
+    /**
+     * @dataProvider stringProvider
+     */
+    public function testSetGetSalt($salt)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setSalt($salt), Base_User::class));
+        $this->assertSame($salt, $user->getSalt());
+    }
+
+    /**
+     * @dataProvider invalidSaltProvider
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetGetSaltFail($salt)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setSalt($salt), Base_User::class));
+        $this->assertSame($salt, $user->getSalt());
+    }
+
+    /**
+     * @dataProvider stringProvider
+     */
+    public function testSetGetPassword($password)
+    {
+        $user = new User;
+
+        $this->assertTrue(is_a($user->setPassword($password), Base_User::class));
+        $this->assertSame($password, $user->getPassword());
     }
 
     // public function userObjectProvider()
