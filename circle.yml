@@ -1,7 +1,7 @@
 
 machine:
   php:
-    version: 7.0.7
+    version: 5.5.31
 
 dependencies:
     pre:
