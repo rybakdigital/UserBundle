@@ -5,6 +5,7 @@ machine:
 
 dependencies:
     pre:
+        - composer require --dev --no-update phpunit/phpunit 4.8.36
         - composer update --prefer-dist --no-interaction
         - composer install
         - composer require symfony/symfony:^3.1
