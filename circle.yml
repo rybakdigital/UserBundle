@@ -1,11 +1,10 @@
 
 machine:
   php:
-    version: 5.5.31
+    version: 7.0.20
 
 dependencies:
     pre:
-        - composer require --dev --no-update phpunit/phpunit 4.8.36
         - composer update --prefer-dist --no-interaction
         - composer install
         - composer require symfony/symfony:^3.1
