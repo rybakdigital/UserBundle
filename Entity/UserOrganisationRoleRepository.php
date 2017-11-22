@@ -4,6 +4,7 @@ namespace RybakDigital\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\EntityRepository;
+use Ucc\Db\Filter\Filter;
 
 /**
  * UserOrganisationRoleRepository
@@ -13,6 +14,55 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserOrganisationRoleRepository extends EntityRepository
 {
+    public static function getValidFilters()
+    {
+        return array_merge(
+            self::getUserFilters(),
+            self::getOrganisationFilters(),
+            self::getRolesFilters()
+        );
+    }
+
+    public static function getUserFilters()
+    {
+        return array(
+            'user.id',
+            'user.username',
+            'user.firstName',
+            'user.lastName',
+            'user.isActive',
+            'user.isExpired',
+            'user.isLocked',
+            'user.isCredentialsExpired',
+        );
+    }
+
+    public static function getOrganisationFilters()
+    {
+        return array(
+            'organisation.id',
+            'organisation.namespace',
+            'organisation.name',
+        );
+    }
+
+    public static function getRolesFilters()
+    {
+        return array(
+            'role.id',
+            'role.name',
+            'role.role',
+        );
+    }
+
+    public static function getValidSorts() {
+        return array(
+            'user.id',
+            'organisation.id',
+            'role.id',
+        );
+    }
+
     public function getUserOrganisations($id, $roles = array(), $includeDescendants = false)
     {
         $orgs = array();
@@ -139,5 +189,86 @@ class UserOrganisationRoleRepository extends EntityRepository
         }
 
         return $users;
+    }
+
+    /**
+     * Returns list of Uors objects
+     *
+     * @param   integer     $limit      Limit to apply
+     * @param   integer     $offset     Offset to apply
+     * @param   array       $filters    List of Criterion objects to apply
+     * @param   array       $sorts      List of sorts to apply
+     * @param   boolean     $totalcount Whether to return total number of objects in the set
+     * @param   array       $args       Array of arguments you may wish to pass to filter
+     * @return  array
+     */
+    public function getUors($limit = null, $offset = null, $filters = array(), $sorts = array(), $totalcount = false, $args = array())
+    {
+        $qb = $this
+            ->createQueryBuilder('uors');
+
+        $qb
+            ->select('uors')
+            ->addSelect('user')
+            ->leftJoin('uors.user', 'user')
+            ->addSelect('role')
+            ->leftJoin('uors.role', 'role');
+
+        $joinOrganisations  = false;
+        $joinRoles          = false;
+
+        foreach ($filters as $filter) {
+            foreach ($filter->getCriterions() as $criterion) {
+                if (in_array($criterion->getKey(), self::getOrganisationFilters())) {
+                    $joinOrganisations = true;
+                }
+            }
+        }
+
+        if ($joinOrganisations) {
+            $qb
+                ->addSelect('organisation')
+                ->leftJoin('uors.organisation', 'organisation');
+        }
+
+        if (!$totalcount) {
+            // Add limit only if not set to 0
+            // as this allows to cancel limit and get all events
+            if (!is_null($limit) && $limit != 0) {
+                $qb->setMaxResults($limit);
+            }
+
+            // Add offset only if not set to 0
+            // as this allows to cancel offset
+            if (!is_null($offset) && $offset != 0) {
+                $qb->setFirstResult($offset);
+            }
+        }
+
+        // If there are any filters
+        if(!empty($filters)) {
+            $dql = Filter::filtersToDqlClause($filters, $qb);
+        }
+
+        // Add sorts
+        foreach ($sorts as $sort) {
+            $qb->addOrderBy($sort->field(), $sort->direction());
+        }
+
+        // Default sorts if none present
+        if (empty($sorts)) {
+            $qb
+                ->addOrderBy('user.id', 'ASC');
+        }
+
+        $query = $qb->getQuery();
+
+        $res = $query->getResult();
+
+        if ($totalcount) {
+            return array('results' => array_slice($res, $offset, $limit), 'totalcount' => count($res));
+        }
+
+        return array('results' => $res, 'totalcount' => count($res));
     }
 }
