@@ -37,6 +37,13 @@ class UserOrganisationRoleRepository extends EntityRepository
         );
     }
 
+    public static function getEmailFilters()
+    {
+        return array(
+            'email.email',
+        );
+    }
+
     public static function getOrganisationFilters()
     {
         return array(
@@ -215,7 +222,6 @@ class UserOrganisationRoleRepository extends EntityRepository
             ->leftJoin('uors.role', 'role');
 
         $joinOrganisations  = false;
-        $joinRoles          = false;
 
         foreach ($filters as $filter) {
             foreach ($filter->getCriterions() as $criterion) {
@@ -270,5 +276,90 @@ class UserOrganisationRoleRepository extends EntityRepository
         }
 
         return array('results' => $res, 'totalcount' => count($res));
+    }
+
+    /**
+     * Returns list of Organisations that match filters
+     *
+     * @param   integer     $limit      Limit to apply
+     * @param   integer     $offset     Offset to apply
+     * @param   array       $filters    List of Criterion objects to apply
+     * @param   array       $sorts      List of sorts to apply
+     * @param   boolean     $totalcount Whether to return total number of objects in the set
+     * @param   array       $args       Array of arguments you may wish to pass to filter
+     * @return  array
+     */
+    public function getOrganisations($limit = null, $offset = null, $filters = array())
+    {
+        $qb = $this
+            ->createQueryBuilder('uors');
+
+        $qb
+            ->select(array('uors', 'org'))
+            ->leftJoin('uors.role', 'role')
+            ->leftJoin('uors.organisation', 'org')
+            ->leftJoin('uors.user', 'user');
+
+        // If there are any filters
+        if(!empty($filters)) {
+            $dql = Filter::filtersToDqlClause($filters, $qb);
+        }
+
+        $query = $qb->getQuery();
+
+        $uors = $query->getResult();
+
+        $orgs = array();
+        foreach($uors as $uor) {
+            $orgs[$uor->getOrganisation()->getNamespace()] = $uor->getOrganisation();
+
+            $descendants = $uor->getOrganisation()->getDescendants();
+
+            foreach($descendants as $descendant) {
+                $orgs[$descendant->getNamespace()] = $descendant;
+            }
+        }
+
+        return $orgs;
+    }
+
+    /**
+     * Returns list of Users that match filters
+     *
+     * @param   integer     $limit      Limit to apply
+     * @param   integer     $offset     Offset to apply
+     * @param   array       $filters    List of Criterion objects to apply
+     * @param   array       $sorts      List of sorts to apply
+     * @param   boolean     $totalcount Whether to return total number of objects in the set
+     * @param   array       $args       Array of arguments you may wish to pass to filter
+     * @return  array
+     */
+    public function getUsers($limit = null, $offset = null, $filters = array())
+    {
+        $qb = $this
+            ->createQueryBuilder('uors');
+
+        $qb
+            ->select(array('uors', 'user'))
+            ->leftJoin('uors.role', 'role')
+            ->leftJoin('uors.user', 'user')
+            ->leftJoin('uors.organisation', 'organisation')
+            ->leftJoin('user.emails', 'email');
+
+
+        // If there are any filters
+        if(!empty($filters)) {
+            $dql = Filter::filtersToDqlClause($filters, $qb);
+        }
+
+        $query  = $qb->getQuery();
+        $uors   = $query->getResult();
+        $users  = array();
+
+        foreach($uors as $uor) {
+            $users[$uor->getUser()->getUsername()] = $uor->getUser();
+        }
+
+        return $users;
     }
 }
