@@ -50,6 +50,7 @@ class UserOrganisationRoleRepository extends EntityRepository
             'organisation.id',
             'organisation.namespace',
             'organisation.name',
+            'organisation.description',
         );
     }
 
@@ -70,7 +71,7 @@ class UserOrganisationRoleRepository extends EntityRepository
         );
     }
 
-    public function getUserOrganisations($id, $roles = array(), $includeDescendants = false)
+    public function getUserOrganisations($id, $roles = array(), $includeDescendants = false, $filters = array())
     {
         $orgs = array();
 
@@ -78,14 +79,19 @@ class UserOrganisationRoleRepository extends EntityRepository
             ->createQueryBuilder('uors');
 
         $qb
-            ->select(array('uors', 'organisations'))
+            ->select(array('uors', 'organisation'))
             ->leftJoin('uors.user', 'user')
             ->leftJoin('uors.role', 'roles')
-            ->leftJoin('uors.organisation', 'organisations')
+            ->leftJoin('uors.organisation', 'organisation')
             ->andWhere('user.id = :id')
             ->andWhere($qb->expr()->in('roles.role', ':roles'))
             ->setParameter('id', $id)
             ->setParameter('roles', $roles);
+
+        // If there are any filters
+        if(!empty($filters)) {
+            $dql = Filter::filtersToDqlClause($filters, $qb);
+        }
 
         $query = $qb->getQuery();
 
