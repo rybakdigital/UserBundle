@@ -71,7 +71,7 @@ class UserOrganisationRoleRepository extends EntityRepository
         );
     }
 
-    public function getUserOrganisations($id, $roles = array(), $includeDescendants = false, $filters = array())
+    public function getUserOrganisations($id, $roles = array(), $filters = array())
     {
         $orgs = array();
 
@@ -100,12 +100,6 @@ class UserOrganisationRoleRepository extends EntityRepository
         foreach ($res as $uor) {
             // Get unique organisations only
             $orgs[$uor->getOrganisation()->getId()] = $uor->getOrganisation();
-
-            // Add descendants if required
-            if ($includeDescendants) {
-                // We want to preserve numeric indexes hance we can not use merge
-                $orgs = $orgs + $uor->getOrganisation()->getDescendants();
-            }
         }
 
         return $orgs;
