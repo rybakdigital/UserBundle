@@ -310,13 +310,16 @@ class UserOrganisationRoleRepository extends EntityRepository
         $uors = $query->getResult();
 
         $orgs = array();
+
         foreach($uors as $uor) {
             $orgs[$uor->getOrganisation()->getNamespace()] = $uor->getOrganisation();
 
             $descendants = $uor->getOrganisation()->getDescendants();
 
-            foreach($descendants as $descendant) {
-                $orgs[$descendant->getNamespace()] = $descendant;
+            if (is_array($descendants)) {
+                foreach($descendants as $descendant) {
+                    $orgs[$descendant->getNamespace()] = $descendant;
+                }
             }
         }
 
@@ -334,7 +337,7 @@ class UserOrganisationRoleRepository extends EntityRepository
      * @param   array       $args       Array of arguments you may wish to pass to filter
      * @return  array
      */
-    public function getUsers($limit = null, $offset = null, $filters = array())
+    public function getUsers($limit = null, $offset = null, $filters = array(), $totalcount = false)
     {
         $qb = $this
             ->createQueryBuilder('uors');
@@ -346,6 +349,19 @@ class UserOrganisationRoleRepository extends EntityRepository
             ->leftJoin('uors.organisation', 'organisation')
             ->leftJoin('user.emails', 'email');
 
+        if (!$totalcount) {
+            // Add limit only if not set to 0
+            // as this allows to cancel limit and get all events
+            if (!is_null($limit) && $limit != 0) {
+                $qb->setMaxResults($limit);
+            }
+
+            // Add offset only if not set to 0
+            // as this allows to cancel offset
+            if (!is_null($offset) && $offset != 0) {
+                $qb->setFirstResult($offset);
+            }
+        }
 
         // If there are any filters
         if(!empty($filters)) {
